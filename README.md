@@ -1,5 +1,5 @@
 # Build
-To build the project do:
+To build the project run:
 
     cmake -B build
     cmake --build build
