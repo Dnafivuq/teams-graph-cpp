@@ -1,0 +1,3 @@
+# Rules that are triggered by catch2 macros
+Checks: >
+  -cppcoreguidelines-avoid-do-while
