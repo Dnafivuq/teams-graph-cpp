@@ -11,4 +11,4 @@ To generate the documentation run:
 
     doxygen
 
-The documentation can be found at `./hmtl/index.html` and can be opened with a browser.
+The documentation can be found at `./html/index.html` and can be opened with a browser.
