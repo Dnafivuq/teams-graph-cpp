@@ -20,4 +20,4 @@ test:
   stage: test
   script:
     - cd build/
-    - ctect
+    - ctest
