@@ -2,7 +2,8 @@ image: gcc:latest
 
 stages:
   - build
-  - test
+  - unit_test
+  - acceptance_test
 
 build:
   stage: build
@@ -16,8 +17,14 @@ build:
     paths:
       - build/
 
-test:
-  stage: test
+unit_test:
+  stage: unit_test
   script:
     - cd build/
-    - ctest
+    - ctest -R unit
+
+acceptance_test:
+  stage: acceptance_test
+  script:
+    - cd build/
+    - ctest -R accept
