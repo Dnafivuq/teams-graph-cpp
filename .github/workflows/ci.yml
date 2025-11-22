@@ -43,6 +43,7 @@ jobs:
       - name: Run unit tests
         run: |
           cd build
+          chmod +x test/unit_test
           ctest -R unit --output-on-failure
 
   acceptance_test:
@@ -60,4 +61,5 @@ jobs:
       - name: Run acceptance tests
         run: |
           cd build
+          chmod +x test/acceptance_test
           ctest -R accept --output-on-failure
