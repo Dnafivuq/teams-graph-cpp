@@ -4,57 +4,202 @@ on:
   pull_request:
 
 jobs:
-  build:
+  lint_lib:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt update
+          sudo apt install -y clang-format clang-tidy cmake clang
+
+      - name: clang-format check (lib)
+        run: |
+          FILES=$(find lib include -name "*.cpp" -o -name "*.hpp" -o -name "*.h")
+          clang-format -style=file -i $FILES
+          git diff --exit-code
+
+      - name: Run clang-tidy (lib)
+        run: |
+          FILES=$(find lib  -name "*.cpp" -o -name "*.hpp" -o -name "*.h")
+          for f in $FILES; do
+            clang-tidy "$f" -- -Iinclude -std=c++20 -warnings-as-errors=*
+          done
+
+  gcc_build_lib:
+    runs-on: ubuntu-latest
+    needs: lint_lib
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install GCC
         run: |
           sudo apt update
-          sudo apt install -y gcc g++ cmake git
+          sudo apt install -y gcc g++ cmake
 
       - name: Configure
-        run: cmake -S . -B build
+        run: cmake -S lib -B build-lib-gcc -DCMAKE_CXX_COMPILER=g++
 
       - name: Build
-        run: cmake --build build --parallel
+        run: cmake --build build-lib-gcc --parallel
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: build
-          path: build/
+          name: build-lib-gcc
+          path: build-lib-gcc/
 
-  unit_test:
+  clang_build_lib:
     runs-on: ubuntu-latest
-    needs: build
+    needs: lint_lib
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang
+        run: |
+          sudo apt update
+          sudo apt install -y clang cmake
+
+      - name: Configure
+        run: cmake -S lib -B build-lib-clang -DCMAKE_CXX_COMPILER=clang++
+
+      - name: Build
+        run: cmake --build build-lib-clang --parallel
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-lib-clang
+          path: build-lib-clang/
+
+  unit_test_lib:
+    runs-on: ubuntu-latest
+    needs: gcc_build_lib
 
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/download-artifact@v4
         with:
-          name: build
+          name: build-lib-gcc
           path: build
 
-      - name: Run unit tests
+      - name: Run lib unit tests
         run: |
           cd build
-          chmod +x test/unit_test
-          ctest -R unit --output-on-failure
+          chmod +x test/lib_unit_test
+          ctest -R lib_unit_test --output-on-failure
+
+  lint_app:
+    runs-on: ubuntu-latest
+    needs: unit_test_lib
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt update
+          sudo apt install -y clang-format clang-tidy cmake clang
+
+      - name: clang-format check (app)
+        run: |
+          FILES=$(find app -name "*.cpp" -o -name "*.hpp" -o -name "*.h")
+          clang-format -style=file -i $FILES
+          git diff --exit-code
+
+      - name: Run clang-tidy (app)
+        run: |
+          FILES=$(find app  -name "*.cpp" -o -name "*.hpp" -o -name "*.h")
+          for f in $FILES; do
+            clang-tidy "$f" -- -Iinclude -std=c++20 -warnings-as-errors=*
+          done
+
+  gcc_build_app:
+    runs-on: ubuntu-latest
+    needs: [lint_app, gcc_build_lib]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-lib-gcc
+          path: build-lib-gcc
+
+      - name: Install GCC
+        run: |
+          sudo apt update
+          sudo apt install -y gcc g++ cmake
+
+      - name: Configure
+        run: |
+          cmake -S app -B build-app-gcc \
+            -DCMAKE_PREFIX_PATH=$PWD/build-lib-gcc \
+            -DCMAKE_CXX_COMPILER=g++
+
+      - name: Build
+        run: cmake --build build-app-gcc --parallel
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-app-gcc
+          path: build-app-gcc/
+
+  clang_build_app:
+    runs-on: ubuntu-latest
+    needs: [lint_app, clang_build_lib]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-lib-clang
+          path: build-lib-clang
+
+      - name: Install clang
+        run: |
+          sudo apt update
+          sudo apt install -y clang cmake
+
+      - name: Configure
+        run: |
+          cmake -S app -B build-app-clang \
+            -DCMAKE_PREFIX_PATH=$PWD/build-lib-clang \
+            -DCMAKE_CXX_COMPILER=clang++
+
+      - name: Build
+        run: cmake --build build-app-clang --parallel
+
+  unit_test_app:
+    runs-on: ubuntu-latest
+    needs: gcc_build_app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-app-gcc
+          path: build
+
+      - name: Run app unit tests
+        run: |
+          cd build
+          chmod +x test/app_unit_test
+          ctest -R app_unit_test --output-on-failure
 
   acceptance_test:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [gcc_build_app, unit_test_app, unit_test_lib]
 
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/download-artifact@v4
         with:
-          name: build
+          name: build-app-gcc
           path: build
 
       - name: Run acceptance tests
