@@ -24,7 +24,7 @@ jobs:
         run: |
           FILES=$(find lib  -name "*.cpp" -o -name "*.hpp" -o -name "*.h")
           for f in $FILES; do
-            clang-tidy "$f" -- -Iinclude -std=c++20 -warnings-as-errors=*
+            clang-tidy "$f" -warnings-as-errors=* -- -Ilib/include -std=c++20 -x c++
           done
 
   gcc_build_lib:
@@ -112,7 +112,7 @@ jobs:
         run: |
           FILES=$(find app  -name "*.cpp" -o -name "*.hpp" -o -name "*.h")
           for f in $FILES; do
-            clang-tidy "$f" -- -Iinclude -std=c++20 -warnings-as-errors=*
+            clang-tidy "$f" -warnings-as-errors=* -- -Ilib/include -std=c++20 -x c++
           done
 
   gcc_build_app:
