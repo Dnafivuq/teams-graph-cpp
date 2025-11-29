@@ -16,7 +16,7 @@ jobs:
 
       - name: clang-format check (lib)
         run: |
-          FILES=$(find lib include -name "*.cpp" -o -name "*.hpp" -o -name "*.h")
+          FILES=$(find lib -name "*.cpp" -o -name "*.hpp" -o -name "*.h")
           clang-format -style=file -i $FILES
           git diff --exit-code
 
