@@ -236,10 +236,10 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: build-test
-          path: build
+          path: build-test
 
       - name: Run acceptance tests
         run: |
-          cd build
+          cd build-test
           chmod +x acceptance_test
           ctest -R acceptance_test --output-on-failure
