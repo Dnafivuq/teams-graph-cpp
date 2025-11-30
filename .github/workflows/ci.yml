@@ -47,7 +47,10 @@ jobs:
           sudo apt install -y gcc g++ cmake
 
       - name: Configure
-        run: cmake -S lib -B build-lib-gcc -DCMAKE_CXX_COMPILER=g++
+        run: |
+          cmake -S lib -B build-lib-gcc \
+          -DCMAKE_CXX_COMPILER=g++ \
+          -DENABLE_COVERAGE=ON
 
       - name: Build
         run: cmake --build build-lib-gcc --parallel
@@ -97,7 +100,8 @@ jobs:
           cmake -S test -B build-test \
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
             -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
-              -Wl,-rpath,$PWD/build"
+              -Wl,-rpath,$PWD/build" \
+            -DENABLE_COVERAGE=ON
 
       - name: Build tests
         run: cmake --build build-test --parallel
@@ -155,7 +159,8 @@ jobs:
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
             -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
               -Wl,-rpath,$PWD/build" \
-            -DCMAKE_CXX_COMPILER=g++
+            -DCMAKE_CXX_COMPILER=g++ \
+            -DENABLE_COVERAGE=ON
 
       - name: Build
         run: cmake --build build-app-gcc --parallel
@@ -217,7 +222,8 @@ jobs:
             -DCMAKE_EXE_LINKER_FLAGS="\
               -L$PWD/build-lib \
               -L$PWD/build-app \
-              -Wl,-rpath,$PWD/build-lib:$PWD/build-app"
+              -Wl,-rpath,$PWD/build-lib:$PWD/build-app" \
+            -DENABLE_COVERAGE=ON
 
       - name: Build tests
         run: cmake --build build-test --parallel
@@ -232,6 +238,53 @@ jobs:
         with:
           name: build-test
           path: build-test/
+
+  coverage:
+    runs-on: ubuntu-latest
+    needs: unit_test_app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install gcovr
+        run: python3 -m pip install gcovr
+
+      - name: Download coverage data
+        uses: actions/download-artifact@v4
+        with:
+          name: build-test
+          path: build-test
+
+      - name: Generate coverage reports
+        run: |
+          gcovr -r $GITHUB_WORKSPACE \
+                -d build-test \
+                -d build-lib-gcc \
+                -d build-app-gcc \
+                --xml coverage.xml \
+                --html-details coverage.html \
+                --print-summary
+
+      - name: Upload coverage HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.html
+
+      - name: Create coverage summary + badge
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: coverage.xml
+          badge: true
+          format: markdown
+          output: both
+          hide_complexity: true
+
+      - name: Upload badge
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-badge
+          path: code-coverage-badges
 
   acceptance_test:
     runs-on: ubuntu-latest
