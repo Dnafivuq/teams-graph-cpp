@@ -249,6 +249,16 @@ jobs:
       - name: Install gcovr
         run: python3 -m pip install gcovr
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-lib-gcc
+          path: build-lib-gcc
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-app-gcc
+          path: build-app-gcc
+
       - name: Download coverage data
         uses: actions/download-artifact@v4
         with:
