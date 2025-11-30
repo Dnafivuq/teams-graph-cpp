@@ -196,14 +196,20 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: build-app-gcc
-          path: build
+          path: build-app
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-lib-gcc
+          path: build-lib
 
       - name: Configure tests
         run: |
           cmake -S test -B build-test \
-            -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
-            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
-              -Wl,-rpath,$PWD/build"
+            -DCMAKE_CXX_FLAGS="-I$PWD/lib/include -I$PWD/app/include" \
+            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build-lib-gcc \
+              -L$PWD/build-app-gcc \
+              -Wl,-rpath,$PWD/build-lib-gcc:$PWD/build-app-gcc"
 
       - name: Build tests
         run: cmake --build build-test --parallel
