@@ -89,8 +89,8 @@ jobs:
         run: |
           cmake -S test -B build-test \
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
-            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build" \
-            -Wl,-rpath,$PWD/build"
+            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
+              -Wl,-rpath,$PWD/build"
 
       - name: Build tests
         run: cmake --build build-test --parallel
@@ -146,8 +146,8 @@ jobs:
         run: |
           cmake -S app -B build-app-gcc \
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
-            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build" \
-            -Wl,-rpath,$PWD/build \
+            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
+              -Wl,-rpath,$PWD/build" \
             -DCMAKE_CXX_COMPILER=g++
 
       - name: Build
@@ -179,8 +179,8 @@ jobs:
         run: |
           cmake -S app -B build-app-clang \
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
-            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build" \
-            -Wl,-rpath,$PWD/build \
+            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
+              -Wl,-rpath,$PWD/build" \
             -DCMAKE_CXX_COMPILER=clang++
 
       - name: Build
@@ -202,8 +202,8 @@ jobs:
         run: |
           cmake -S test -B build-test \
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
-            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build" \
-            -Wl,-rpath,$PWD/build"
+            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
+              -Wl,-rpath,$PWD/build"
 
       - name: Build tests
         run: cmake --build build-test --parallel
