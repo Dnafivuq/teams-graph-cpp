@@ -258,9 +258,9 @@ jobs:
       - name: Generate coverage reports
         run: |
           gcovr -r $GITHUB_WORKSPACE \
-                -d build-test \
-                -d build-lib-gcc \
-                -d build-app-gcc \
+                build-test \
+                build-lib-gcc \
+                build-app-gcc \
                 --xml coverage.xml \
                 --html-details coverage.html \
                 --print-summary
