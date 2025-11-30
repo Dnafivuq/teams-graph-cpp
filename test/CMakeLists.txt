@@ -1,4 +1,3 @@
-cmake_minimum_required(VERSION 4.2)
 include(FetchContent)
 FetchContent_Declare(
    catch2
