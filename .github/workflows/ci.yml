@@ -85,10 +85,18 @@ jobs:
           name: build-lib-gcc
           path: build
 
+      - name: Build tests
+        run: |
+          cmake -S test -B build-test \
+            -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
+            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
+            -Wl,-rpath,$PWD/build"
+          cmake --build build-test
+
       - name: Run lib unit tests
         run: |
-          cd build
-          chmod +x test/lib_unit_test
+          cd build-test
+          chmod +x lib_unit_test
           ctest -R lib_unit_test --output-on-failure
 
   lint_app:
@@ -184,11 +192,24 @@ jobs:
           name: build-app-gcc
           path: build
 
+      - name: Build tests
+        run: |
+          cmake -S test -B build-test \
+            -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
+            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
+            -Wl,-rpath,$PWD/build"
+          cmake --build build-test
+
       - name: Run app unit tests
         run: |
-          cd build
-          chmod +x test/app_unit_test
+          cd build-test
+          chmod +x app_unit_test
           ctest -R app_unit_test --output-on-failure
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-test
+          path: build-test/
 
   acceptance_test:
     runs-on: ubuntu-latest
@@ -199,11 +220,11 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: build-app-gcc
+          name: build-test
           path: build
 
       - name: Run acceptance tests
         run: |
           cd build
-          chmod +x test/acceptance_test
+          chmod +x acceptance_test
           ctest -R accept --output-on-failure
