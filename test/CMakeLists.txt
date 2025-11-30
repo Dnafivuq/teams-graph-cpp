@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 4.2)
 include(FetchContent)
 FetchContent_Declare(
    catch2
@@ -35,8 +36,7 @@ target_link_libraries(
 target_include_directories(
     app_unit_test
     PRIVATE
-        ${CMAKE_SOURCE_DIR}/lib/src
-        ${CMAKE_SOURCE_DIR}/lib/include
+        ${CMAKE_SOURCE_DIR}/app
 )
 
 
@@ -52,12 +52,12 @@ target_link_libraries(
 target_include_directories(
     acceptance_test
     PRIVATE
+        ${CMAKE_SOURCE_DIR}/app
         ${CMAKE_SOURCE_DIR}/lib/src
         ${CMAKE_SOURCE_DIR}/lib/include
 )
 
 
-include(Catch)
 add_test(
     NAME lib_unit_test
     COMMAND lib_unit_test [lib]
@@ -66,8 +66,7 @@ add_test(
     NAME app_unit_test
     COMMAND app_unit_test [app]
 )
-catch_discover_tests(
-    acceptance_test
-    TEST_PREFIX "accept."
-    DISCOVERY_TIMEOUT 10
+add_test(
+    NAME acceptance_test
+    COMMAND acceptance_test [accept]
 )
