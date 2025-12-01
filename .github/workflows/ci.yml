@@ -310,7 +310,7 @@ jobs:
       - name: Generate coverage reports
         run: |
           gcovr -r $GITHUB_WORKSPACE \
-                build-test-app \
+                build-test-accept \
                 build-test-lib \
                 build-lib \
                 build-app \
