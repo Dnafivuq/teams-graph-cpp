@@ -320,7 +320,10 @@ jobs:
                 --html-details coverage.html \
                 --print-summary \
                 --exclude '.*_deps/.*' \
-                --exclude '.*usr/.*'
+                --exclude '.*test/.*' \
+                --exclude '/usr/include/' \
+                --exclude-directories '.*_deps.*' \
+                --exclude-directories '.*usr.*'
 
       - name: Upload coverage HTML
         uses: actions/upload-artifact@v4
