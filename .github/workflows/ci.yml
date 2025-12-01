@@ -281,6 +281,7 @@ jobs:
                 build-test \
                 build-lib \
                 build-app \
+                --gcov-executable gcov-14
                 --xml coverage.xml \
                 --html-details coverage.html \
                 --print-summary
