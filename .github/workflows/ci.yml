@@ -264,18 +264,18 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: build-test-app
-          path: build-test-accept
+          path: build-test-app
 
       - name: Run acceptance tests
         run: |
-          cd build-test-accept
+          cd build-test-app
           chmod +x acceptance_test
           ctest -R acceptance_test --output-on-failure
 
       - uses: actions/upload-artifact@v4
         with:
           name: build-test-accept
-          path: build-test-accept/
+          path: build-test-app/
 
   coverage:
     runs-on: ubuntu-latest
@@ -300,7 +300,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: build-test-accept
-          path: build-test-accept
+          path: build-test-app
 
       - uses: actions/download-artifact@v4
         with:
