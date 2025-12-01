@@ -318,7 +318,7 @@ jobs:
                 build-app \
                 --gcov-executable gcov-14 \
                 --verbose \
-                --xml coverage.xml \
+                --xml -o coverage.xml \
                 --html-details coverage.html \
                 --print-summary \
                 --exclude '.*_deps/.*' \
