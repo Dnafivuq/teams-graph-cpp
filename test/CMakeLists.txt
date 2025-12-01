@@ -10,8 +10,14 @@ enable_testing()
 option(ENABLE_COVERAGE "Enable coverage" OFF)
 
 if(ENABLE_COVERAGE)
-    add_compile_options(-g -O0 --coverage -fprofile-arcs -ftest-coverage)
-    add_link_options(-O0 -g --coverage -fprofile-arcs -ftest-coverage)
+    target_compile_options(lib_unit_test PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
+    target_link_options(lib_unit_test PRIVATE --coverage -O0 -g)
+    
+    target_compile_options(app_unit_test PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
+    target_link_options(app_unit_test PRIVATE --coverage -O0 -g)
+    
+    target_compile_options(acceptance_test PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
+    target_link_options(acceptance_test PRIVATE --coverage -O0 -g)
 endif()
 
 add_executable(
