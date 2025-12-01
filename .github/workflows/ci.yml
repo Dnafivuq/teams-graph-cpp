@@ -281,13 +281,13 @@ jobs:
                 build-test \
                 build-lib \
                 build-app \
-                --gcov-executable gcov-14
-                --verbose
+                --gcov-executable gcov-14 \
+                --verbose \
                 --xml coverage.xml \
                 --html-details coverage.html \
-                --print-summary
+                --print-summary \
                 --exclude '(^|/)(build/)?_deps/.*' \
-                --exclude-directories '(^|/)(build/)?_deps/.*' \
+                --exclude-directories '(^|/)(build/)?_deps/.*'
 
       - name: Upload coverage HTML
         uses: actions/upload-artifact@v4
