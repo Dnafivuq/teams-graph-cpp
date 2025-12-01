@@ -7,18 +7,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(catch2)
 enable_testing()
 
-option(ENABLE_COVERAGE "Enable coverage" OFF)
-
-if(ENABLE_COVERAGE)
-    target_compile_options(lib_unit_test PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
-    target_link_options(lib_unit_test PRIVATE --coverage -O0 -g)
-    
-    target_compile_options(app_unit_test PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
-    target_link_options(app_unit_test PRIVATE --coverage -O0 -g)
-    
-    target_compile_options(acceptance_test PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
-    target_link_options(acceptance_test PRIVATE --coverage -O0 -g)
-endif()
 
 add_executable(
     lib_unit_test
@@ -69,6 +57,19 @@ target_include_directories(
         ${CMAKE_SOURCE_DIR}/lib/include
 )
 
+
+option(ENABLE_COVERAGE "Enable coverage" OFF)
+
+if(ENABLE_COVERAGE)
+    target_compile_options(lib_unit_test PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
+    target_link_options(lib_unit_test PRIVATE --coverage -O0 -g)
+    
+    target_compile_options(app_unit_test PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
+    target_link_options(app_unit_test PRIVATE --coverage -O0 -g)
+    
+    target_compile_options(acceptance_test PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
+    target_link_options(acceptance_test PRIVATE --coverage -O0 -g)
+endif()
 
 add_test(
     NAME lib_unit_test
