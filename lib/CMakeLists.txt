@@ -1,10 +1,3 @@
-option(ENABLE_COVERAGE "Enable coverage" OFF)
-
-if(ENABLE_COVERAGE)
-    add_compile_options(-g -O0 --coverage -fprofile-arcs -ftest-coverage)
-    add_link_options(-O0 -g --coverage -fprofile-arcs -ftest-coverage)
-endif()
-
 add_library(teams_lib STATIC
     src/Test.cpp
 )
@@ -12,3 +5,10 @@ add_library(teams_lib STATIC
 target_include_directories( teams_lib
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+option(ENABLE_COVERAGE "Enable coverage" OFF)
+
+if(ENABLE_COVERAGE)
+    target_compile_options(teams_lib PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
+    target_link_options(teams_lib PRIVATE --coverage -O0 -g)
+endif()
