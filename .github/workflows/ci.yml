@@ -319,11 +319,11 @@ jobs:
                 --xml coverage.xml \
                 --html-details coverage.html \
                 --print-summary \
-                --exclude '.*_deps/.*' \
-                --exclude '.*test/.*' \
-                --exclude '/usr/include/' \
-                --exclude-directories '.*_deps.*' \
-                --exclude-directories '.*usr.*'
+                --exclude '(^|/)build-test-app/_deps/.*' \
+                --exclude '(^|/)build-test-lib/_deps/.*' \
+                --exclude '(^|/)build-app/_deps/.*' \
+                --exclude '(^|/)build-lib/_deps/.*' \
+                --exclude '(^|/)usr/include/.*'
 
       - name: Upload coverage HTML
         uses: actions/upload-artifact@v4
