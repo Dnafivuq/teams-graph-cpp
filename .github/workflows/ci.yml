@@ -274,7 +274,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build-test-app
+          name: build-test-accept
           path: build-test-app/
 
   coverage:
@@ -299,7 +299,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: build-test-app
+          name: build-test-accept
           path: build-test-app
 
       - uses: actions/download-artifact@v4
@@ -320,6 +320,7 @@ jobs:
                 --html-details coverage.html \
                 --print-summary \
                 --exclude '(^|/)build-test-app/_deps/.*' \
+                --exclude '(^|/)build-test-accept/_deps/.*' \
                 --exclude '(^|/)build-test-lib/_deps/.*' \
                 --exclude '(^|/)build-app/_deps/.*' \
                 --exclude '(^|/)build-lib/_deps/.*' \
