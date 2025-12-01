@@ -319,8 +319,8 @@ jobs:
                 --xml coverage.xml \
                 --html-details coverage.html \
                 --print-summary \
-                --exclude '(^|/)(build/)?_deps/.*' \
-                --exclude-directories '(^|/)(build/)?_deps/.*'
+                --exclude '.*_deps/.*' \
+                --exclude '.*usr/.*'
 
       - name: Upload coverage HTML
         uses: actions/upload-artifact@v4
