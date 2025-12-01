@@ -112,6 +112,11 @@ jobs:
           chmod +x lib_unit_test
           ctest -R lib_unit_test --output-on-failure
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-lib
+          path: build/
+
   lint_app:
     runs-on: ubuntu-latest
     needs: unit_test_lib
@@ -239,6 +244,11 @@ jobs:
           name: build-test
           path: build-test/
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-app
+          path: build-app/
+
   coverage:
     runs-on: ubuntu-latest
     needs: unit_test_app
@@ -251,13 +261,13 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: build-lib-gcc
-          path: build-lib-gcc
+          name: build-lib
+          path: build-lib
 
       - uses: actions/download-artifact@v4
         with:
-          name: build-app-gcc
-          path: build-app-gcc
+          name: build-app
+          path: build-app
 
       - name: Download coverage data
         uses: actions/download-artifact@v4
@@ -269,8 +279,8 @@ jobs:
         run: |
           gcovr -r $GITHUB_WORKSPACE \
                 build-test \
-                build-lib-gcc \
-                build-app-gcc \
+                build-lib \
+                build-app \
                 --xml coverage.xml \
                 --html-details coverage.html \
                 --print-summary
