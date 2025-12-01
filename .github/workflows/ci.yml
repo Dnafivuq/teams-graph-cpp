@@ -117,6 +117,11 @@ jobs:
           name: build-lib
           path: build/
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-test-lib
+          path: build-test/
+
   lint_app:
     runs-on: ubuntu-latest
     needs: unit_test_lib
@@ -241,7 +246,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build-test
+          name: build-test-app
           path: build-test/
 
       - uses: actions/upload-artifact@v4
@@ -249,9 +254,32 @@ jobs:
           name: build-app
           path: build-app/
 
+  acceptance_test:
+    runs-on: ubuntu-latest
+    needs: [gcc_build_app, unit_test_app, unit_test_lib]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-test-app
+          path: build-test
+
+      - name: Run acceptance tests
+        run: |
+          cd build-test
+          chmod +x acceptance_test
+          ctest -R acceptance_test --output-on-failure
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-test
+          path: build-test/
+
   coverage:
     runs-on: ubuntu-latest
-    needs: unit_test_app
+    needs: [unit_test_app, acceptance_test]
 
     steps:
       - uses: actions/checkout@v4
@@ -269,16 +297,21 @@ jobs:
           name: build-app
           path: build-app
 
-      - name: Download coverage data
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
-          name: build-test
-          path: build-test
+          name: build-test-app
+          path: build-test-app
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-test-lib
+          path: build-test-lib
 
       - name: Generate coverage reports
         run: |
           gcovr -r $GITHUB_WORKSPACE \
-                build-test \
+                build-test-app \
+                build-test-lib \
                 build-lib \
                 build-app \
                 --gcov-executable gcov-14 \
@@ -309,21 +342,3 @@ jobs:
         with:
           name: coverage-badge
           path: code-coverage-badges
-
-  acceptance_test:
-    runs-on: ubuntu-latest
-    needs: [gcc_build_app, unit_test_app, unit_test_lib]
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-test
-          path: build-test
-
-      - name: Run acceptance tests
-        run: |
-          cd build-test
-          chmod +x acceptance_test
-          ctest -R acceptance_test --output-on-failure
