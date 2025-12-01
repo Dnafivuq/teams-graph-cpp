@@ -93,34 +93,34 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: build-lib-gcc
-          path: build
+          path: build-lib
 
       - name: Configure tests
         run: |
-          cmake -S test -B build-test \
+          cmake -S test -B build-test-lib \
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
-            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
-              -Wl,-rpath,$PWD/build" \
+            -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build-lib \
+              -Wl,-rpath,$PWD/build-lib" \
             -DENABLE_COVERAGE=ON
 
       - name: Build tests
-        run: cmake --build build-test --parallel
+        run: cmake --build build-test-lib --parallel
 
       - name: Run lib unit tests
         run: |
-          cd build-test
+          cd build-test-lib
           chmod +x lib_unit_test
           ctest -R lib_unit_test --output-on-failure
 
       - uses: actions/upload-artifact@v4
         with:
           name: build-lib
-          path: build/
+          path: build-lib/
 
       - uses: actions/upload-artifact@v4
         with:
           name: build-test-lib
-          path: build-test/
+          path: build-test-lib/
 
   lint_app:
     runs-on: ubuntu-latest
@@ -227,7 +227,7 @@ jobs:
 
       - name: Configure tests
         run: |
-          cmake -S test -B build-test \
+          cmake -S test -B build-test-app \
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include -I$PWD/app" \
             -DCMAKE_EXE_LINKER_FLAGS="\
               -L$PWD/build-lib \
@@ -236,18 +236,18 @@ jobs:
             -DENABLE_COVERAGE=ON
 
       - name: Build tests
-        run: cmake --build build-test --parallel
+        run: cmake --build build-test-app --parallel
 
       - name: Run app unit tests
         run: |
-          cd build-test
+          cd build-test-app
           chmod +x app_unit_test
           ctest -R app_unit_test --output-on-failure
 
       - uses: actions/upload-artifact@v4
         with:
           name: build-test-app
-          path: build-test/
+          path: build-test-app/
 
       - uses: actions/upload-artifact@v4
         with:
@@ -264,18 +264,18 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: build-test-app
-          path: build-test
+          path: build-test-app
 
       - name: Run acceptance tests
         run: |
-          cd build-test
+          cd build-test-app
           chmod +x acceptance_test
           ctest -R acceptance_test --output-on-failure
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build-test
-          path: build-test/
+          name: build-test-app
+          path: build-test-app/
 
   coverage:
     runs-on: ubuntu-latest
