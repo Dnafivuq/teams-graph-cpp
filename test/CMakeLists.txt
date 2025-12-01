@@ -7,6 +7,13 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(catch2)
 enable_testing()
 
+option(ENABLE_COVERAGE "Enable coverage" OFF)
+
+if(ENABLE_COVERAGE)
+    add_compile_options(-g -O0 --coverage -fprofile-arcs -ftest-coverage)
+    add_link_options(-O0 -g --coverage -fprofile-arcs -ftest-coverage)
+endif()
+
 add_executable(
     lib_unit_test
     Unit_tests.cpp
