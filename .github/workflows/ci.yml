@@ -315,11 +315,12 @@ jobs:
                 build-lib \
                 build-app \
                 --gcov-executable gcov-14 \
-                --gcov-filter '^(build-test-accept/CMakeFiles|build-lib|build-app|build-test-lib/CMakeFiles)/' \
                 --verbose \
                 --xml coverage.xml \
                 --html-details coverage.html \
-                --print-summary
+                --print-summary \
+                --exclude '.*_deps/.*' \
+                --exclude '.*usr/include/.*'
 
       - name: Upload coverage HTML
         uses: actions/upload-artifact@v4
