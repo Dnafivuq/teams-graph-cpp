@@ -101,6 +101,7 @@ jobs:
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
             -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build-lib \
               -Wl,-rpath,$PWD/build-lib" \
+            -DCMAKE_CXX_COMPILER=g++-14 \
             -DENABLE_COVERAGE=ON
 
       - name: Build tests
@@ -233,6 +234,7 @@ jobs:
               -L$PWD/build-lib \
               -L$PWD/build-app \
               -Wl,-rpath,$PWD/build-lib:$PWD/build-app" \
+            -DCMAKE_CXX_COMPILER=g++-14 \
             -DENABLE_COVERAGE=ON
 
       - name: Build tests
