@@ -10,13 +10,12 @@ class TokenStorageProvider {
 public:
     TokenStorageProvider() = default;
 
-    std::optional<RefreshToken> loadRefreshToken() const {
-        return static_cast<const DerivedProvider*>(this)
-            ->loadRefreshTokenImpl();
+    std::optional<RefreshToken> load() const {
+        return static_cast<const DerivedProvider*>(this)->loadImpl();
     };
 
-    void storeRefreshToken(const RefreshToken& token) const {
-        static_cast<const DerivedProvider*>(this)->storeRefreshTokenImpl(token);
+    void store(const RefreshToken& token) const {
+        static_cast<const DerivedProvider*>(this)->storeImpl(token);
     };
 };
 }  // namespace teams::priv

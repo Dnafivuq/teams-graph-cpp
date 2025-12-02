@@ -10,32 +10,30 @@ namespace teams::priv {
 template <typename DerivedProvider>
 class TokenProvider {
 public:
-    explicit TokenProvider(DeviceCodeCredential device_code_credential,
-                           std::string scopes)
-        : device_code_credential_{std::move(device_code_credential)},
+    explicit TokenProvider(DeviceCodeCredential credentials, Scopes scopes)
+        : device_code_credential_{std::move(credentials)},
           scopes_{std::move(scopes)} {};
 
     // TODO: change to std::expected on c++ version bump
-    std::optional<Tokens> acquireTokens() const {
-        return static_cast<const DerivedProvider*>(this)->acquireTokensImpl();
+    std::optional<Tokens> acquire() const {
+        return static_cast<const DerivedProvider*>(this)->acquireImpl();
     };
 
     // TODO: change to std::expected on c++ version bump
-    std::optional<Tokens> acquireTokensSilently(
-        const RefreshToken& refresh_token) const {
-        return static_cast<const DerivedProvider*>(this)
-            ->acquireTokensSilentlyImpl(refresh_token);
+    std::optional<Tokens> acquireSilently(const RefreshToken& token) const {
+        return static_cast<const DerivedProvider*>(this)->acquireSilentlyImpl(
+            token);
     }
 
     const DeviceCodeCredential& credentials() const {
         return device_code_credential_;
     }
 
-    const std::string& scopes() const { return scopes_; }
+    const Scopes& scopes() const { return scopes_; }
 
 private:
     DeviceCodeCredential device_code_credential_;
-    std::string scopes_;
+    Scopes scopes_;
 };
 
 }  // namespace teams::priv

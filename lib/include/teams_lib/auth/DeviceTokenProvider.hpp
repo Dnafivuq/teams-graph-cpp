@@ -12,8 +12,6 @@ namespace priv {
 
 class DeviceTokenProvider : public TokenProvider<DeviceTokenProvider> {
     friend TokenProvider;
-    using TokenProvider<DeviceTokenProvider>::credentials;
-    using TokenProvider<DeviceTokenProvider>::scopes;
 
 public:
     DeviceTokenProvider(DeviceCodeCredential device_code_credential,
@@ -22,7 +20,7 @@ public:
         : TokenProvider{std::move(device_code_credential), std::move(scopes)} {}
 
 private:
-    std::optional<Tokens> acquireTokensImpl() const {
+    std::optional<Tokens> acquireImpl() const {
         httplib::Client cli("https://login.microsoftonline.com");
 
         auto device_code_path = std::string("/" + credentials().tenant() +
@@ -76,8 +74,7 @@ private:
         }
     }
 
-    std::optional<Tokens> acquireTokensSilentlyImpl(
-        const RefreshToken& refresh_token) const {
+    std::optional<Tokens> acquireSilentlyImpl(const RefreshToken& token) const {
         httplib::Client cli("https://login.microsoftonline.com");
 
         auto refresh_path =
@@ -88,7 +85,7 @@ private:
         auto refresh_params =
             httplib::Params{{"client_id", credentials().client()},
                             {"scope", scopes()},
-                            {"refresh_token", refresh_token},
+                            {"refresh_token", token},
                             {"grant_type", "refresh_token"}};
 
         auto refresh_res =
@@ -100,7 +97,6 @@ private:
         }
 
         auto refresh_resp = nlohmann::json::parse(refresh_res->body);
-
         // TODO: add error
         if (!refresh_resp.contains("access_token")) {
             return std::nullopt;
@@ -113,7 +109,6 @@ private:
             tokens.refresh_token =
                 refresh_resp["refresh_token"].get<RefreshToken>();
         }
-
         return tokens;
     }
 };

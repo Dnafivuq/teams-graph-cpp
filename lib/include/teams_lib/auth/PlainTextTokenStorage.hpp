@@ -21,7 +21,7 @@ public:
           file_path_(std::move(file_path)) {}
 
 private:
-    std::optional<RefreshToken> loadRefreshTokenImpl() const {
+    std::optional<RefreshToken> loadImpl() const {
         std::ifstream file_handle(file_path_);
         if (!file_handle.is_open()) {
             return std::nullopt;
@@ -31,7 +31,7 @@ private:
     }
 
     // TODO: add status returning
-    void storeRefreshTokenImpl(const RefreshToken& token) const {
+    void storeImpl(const RefreshToken& token) const {
         std::ofstream file_handle(file_path_);
         if (file_handle.is_open()) {
             file_handle << token;

@@ -13,6 +13,7 @@ using Token = std::string;
 
 using RefreshToken = Token;
 using AccessToken = Token;
+using Scopes = std::string;
 
 using ID = std::string;
 using URL = std::string;

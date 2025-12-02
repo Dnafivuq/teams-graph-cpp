@@ -5,8 +5,8 @@
 namespace teams::priv {
 
 struct Tokens {
-    Token access_token;
-    std::optional<Token> refresh_token;
+    AccessToken access_token;
+    std::optional<RefreshToken> refresh_token;
 };
 
 }  // namespace teams::priv

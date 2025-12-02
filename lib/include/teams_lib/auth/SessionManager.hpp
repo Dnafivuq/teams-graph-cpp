@@ -1,6 +1,8 @@
 #pragma once
 
-#include "teams_lib/common.hpp"
+#include <optional>
+#include <teams_lib/auth/Tokens.hpp>
+#include <teams_lib/common.hpp>
 
 namespace teams::priv {
 
@@ -23,43 +25,30 @@ public:
     }
 
 private:
-    void tryStoreRefreshToken(const RefreshToken& refresh_token) {
-        storage_provider_.storeRefreshToken(refresh_token);
+    void tryToStore(const std::optional<RefreshToken>& token) {
+        if (token) {
+            storage_provider_.store(token.value());
+        }
     }
 
-    bool tryAcquireTokensSilently() {
-        if (auto refresh_token = storage_provider_.loadRefreshToken()) {
-            if (auto tokens =
-                    provider_.acquireTokensSilently(refresh_token.value())) {
-                cached_token_ = tokens.value().access_token;
-
-                // try to store refresh token
-                if (tokens.value().refresh_token) {
-                    tryStoreRefreshToken(tokens.value().refresh_token.value());
-                }
-                return true;
-            }
+    // TODO: change to std::expected
+    std::optional<Tokens> tryToAcquireSilently() {
+        if (auto refresh_token = storage_provider_.load()) {
+            return provider_.acquireSilently(refresh_token.value());
         }
-        return false;
-    }
-    bool tryAcquireTokens() {
-        if (auto tokens = provider_.acquireTokens()) {
-            cached_token_ = tokens.value().access_token;
-            if (!tokens.value().refresh_token) {
-                std::cout << "[WARNING] NO REFRESH TOKEN\n";
-            }
-            tryStoreRefreshToken(tokens.value().refresh_token.value());
-            return true;
-        }
-        return false;
+        return std::nullopt;
     }
 
     void acquireTokens() {
-        if (tryAcquireTokensSilently()) {
-            return;
+        if (auto tokens = tryToAcquireSilently()) {
+            cached_token_ = tokens.value().access_token;
+            tryToStore(tokens.value().refresh_token);
+            return;  // tokens acquired
         }
-        if (tryAcquireTokens()) {
-            return;
+        if (auto tokens = provider_.acquire()) {
+            cached_token_ = tokens.value().access_token;
+            tryToStore(tokens.value().refresh_token);
+            return;  // tokens acquired
         }
         throw;
     }
