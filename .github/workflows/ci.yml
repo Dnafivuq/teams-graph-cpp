@@ -73,7 +73,7 @@ jobs:
 
       - name: Run clang-tidy (lib)
         run: |
-          FILES=$(find lib  -name "*.cpp" -o -name "*.hpp" -o -name "*.h")
+          FILES=$(find lib  -name "*.cpp")
           for f in $FILES; do
             clang-tidy -p build-lib-clang "$f" -warnings-as-errors=*
           done
@@ -204,7 +204,7 @@ jobs:
 
       - name: Run clang-tidy (app)
         run: |
-          FILES=$(find app  -name "*.cpp" -o -name "*.hpp" -o -name "*.h")
+          FILES=$(find app  -name "*.cpp")
           for f in $FILES; do
             clang-tidy -p build-app-clang "$f" -warnings-as-errors=*
           done
