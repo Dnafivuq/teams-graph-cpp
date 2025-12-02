@@ -1,3 +1,6 @@
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+
 add_executable( teams_cli
     main.cpp
 )
