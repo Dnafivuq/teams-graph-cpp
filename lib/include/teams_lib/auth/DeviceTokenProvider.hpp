@@ -23,46 +23,47 @@ private:
     std::optional<Tokens> acquireImpl() const {
         httplib::Client cli("https://login.microsoftonline.com");
 
-        auto device_code_path = std::string("/" + credentials().tenant() +
-                                            "/oauth2/v2.0/devicecode");
+        const auto device_code_path = std::string("/" + credentials().tenant() +
+                                                  "/oauth2/v2.0/devicecode");
 
-        auto device_params = httplib::Params{
+        const auto device_params = httplib::Params{
             {"client_id", credentials().client()}, {"scope", scopes()}};
 
-        auto device_res = cli.Post(device_code_path, device_params);
+        const auto device_res = cli.Post(device_code_path, device_params);
 
         // TODO: add better error handling
         if (!device_res) {
             return std::nullopt;
         }
 
-        auto device_code_resp = nlohmann::json::parse(device_res->body);
+        const auto device_code_resp = nlohmann::json::parse(device_res->body);
 
-        auto message = device_code_resp["message"].get<std::string>();
-        auto device_code = device_code_resp["device_code"].get<std::string>();
-        auto interval = device_code_resp["interval"].get<int>();
+        const auto message = device_code_resp["message"].get<std::string>();
+        const auto device_code =
+            device_code_resp["device_code"].get<std::string>();
+        const auto interval = device_code_resp["interval"].get<int>();
 
         // Print out auth message
         std::cout << message << "\n\n";
 
-        auto token_path =
+        const auto token_path =
             std::string("/" + credentials().tenant() + "/oauth2/v2.0/token");
 
         while (true) {
             std::this_thread::sleep_for(std::chrono::seconds(interval));
-            httplib::Params token_params = {
+            const httplib::Params token_params = {
                 {"grant_type", "device_code"},
                 {"client_id", credentials().client()},
                 {"device_code", device_code}};
 
-            auto token_res = cli.Post(token_path, token_params);
+            const auto token_res = cli.Post(token_path, token_params);
 
             // TODO: Add checking if url is ok
             if (!token_res) {
                 continue;
             }
 
-            auto token_json = nlohmann::json::parse(token_res->body);
+            const auto token_json = nlohmann::json::parse(token_res->body);
 
             if (token_json.contains("error")) {
                 continue;
@@ -77,18 +78,18 @@ private:
     std::optional<Tokens> acquireSilentlyImpl(const RefreshToken& token) const {
         httplib::Client cli("https://login.microsoftonline.com");
 
-        auto refresh_path =
+        const auto refresh_path =
             std::string("/" + credentials().tenant() + "/oauth2/v2.0/token");
-        auto refresh_header = httplib::Headers{
+        const auto refresh_header = httplib::Headers{
             {"Content-Type", "application/x-www-form-urlencoded"}};
 
-        auto refresh_params =
+        const auto refresh_params =
             httplib::Params{{"client_id", credentials().client()},
                             {"scope", scopes()},
                             {"refresh_token", token},
                             {"grant_type", "refresh_token"}};
 
-        auto refresh_res =
+        const auto refresh_res =
             cli.Post(refresh_path, refresh_header, refresh_params);
 
         // TODO: add better error handling
@@ -96,7 +97,7 @@ private:
             return std::nullopt;
         }
 
-        auto refresh_resp = nlohmann::json::parse(refresh_res->body);
+        const auto refresh_resp = nlohmann::json::parse(refresh_res->body);
         // TODO: add error
         if (!refresh_resp.contains("access_token")) {
             return std::nullopt;

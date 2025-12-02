@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 #include <teams_lib/common.hpp>
 
 namespace teams {
