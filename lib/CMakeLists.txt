@@ -18,7 +18,9 @@ add_library(teams_lib STATIC
 )
 
 target_include_directories( teams_lib
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+    PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${httplib_SOURCE_DIR}
 )
 
 option(ENABLE_COVERAGE "Enable coverage" OFF)
@@ -33,6 +35,5 @@ target_link_libraries(teams_lib
     PUBLIC
         OpenSSL::SSL
         OpenSSL::Crypto
-        httplib
         nlohmann_json::nlohmann_json
 )
