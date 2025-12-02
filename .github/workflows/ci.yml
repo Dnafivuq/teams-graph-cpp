@@ -339,8 +339,14 @@ jobs:
           output: both
           hide_complexity: true
 
-      - name: Upload badge
+      - name: Prepare badge for upload
+        run: |
+          mkdir -p code-coverage-badges
+          mv coverage-badge.svg code-coverage-badges/
+
+      - name: Upload coverage badge
         uses: actions/upload-artifact@v4
         with:
           name: coverage-badge
-          path: code-coverage-results/badges
+          path: code-coverage-badges
+          if-no-files-found: warn
