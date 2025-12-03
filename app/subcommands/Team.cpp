@@ -2,10 +2,8 @@
 
 #include "callbacks/Team.hpp"
 
-
 namespace sub::team {
 namespace ct = callbacks::team;
-
 
 CLI::App* setup(CLI::App* app) {
     return app->add_subcommand("team", "Manage teams")
