@@ -21,5 +21,5 @@ public:
      \param b the second number to add
      \return the sum of \p a \p b
     */
-    int add(int a, int b);
+    static int add(int first_number, int second_number);
 };

@@ -1,6 +1,6 @@
-#include "teams_lib/Test.h"
-
 #include <iostream>
+
+#include "teams_lib/Test.h"
 
 int main() {
     std::cout << "Hello";
