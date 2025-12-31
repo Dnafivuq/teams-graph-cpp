@@ -25,9 +25,6 @@ concept IsCollection = requires { typename T::value_type; } &&
                        std::same_as<T, std::vector<typename T::value_type>>;
 
 template <typename T>
-concept IsSoftRemovable = !IsCollection<T> && !IsInSoftRemovables<T>;
-
-template <typename T>
 concept IsRemovable = !IsCollection<T> && !IsInSoftRemovables<T>;
 
 template <typename T>
