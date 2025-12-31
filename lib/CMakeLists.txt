@@ -35,6 +35,6 @@ target_link_libraries(teams_lib
     PUBLIC
         OpenSSL::SSL
         OpenSSL::Crypto
-        httplib
+        httplib::httplib
         nlohmann_json::nlohmann_json
 )
