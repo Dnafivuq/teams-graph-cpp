@@ -1,7 +1,7 @@
 #pragma once
 
 namespace sub::opts {
-// List might have common options such as limit
+// Some commands might have common options such as limit, ordering
 struct BaseListOptions {};
 struct BaseAddOptions {};
 
