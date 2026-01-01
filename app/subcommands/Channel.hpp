@@ -4,11 +4,14 @@
 #include "BaseOptions.hpp"
 #include "CLI/CLI.hpp"
 
-namespace sub::team {
+namespace sub::channel {
 struct AddOptions : opts::BaseAddOptions {};
-struct ListOptions : opts::BaseListOptions {};
+struct ListOptions : opts::BaseListOptions {
+    std::string team;
+};
 
 CLI::App* setup(CLI::App*);
 CLI::App* setupAdd(CLI::App*, teams::GraphServiceClient&);
 CLI::App* setupList(CLI::App*, teams::GraphServiceClient&);
-}  // namespace sub::team
+
+}  // namespace sub::channel

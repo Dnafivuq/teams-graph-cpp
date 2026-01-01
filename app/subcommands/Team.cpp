@@ -6,22 +6,20 @@ namespace sub::team {
 namespace ct = callbacks::team;
 
 CLI::App* setup(CLI::App* app) {
-    return app->add_subcommand("team", "Manage teams")
-        ->alias("t")
-        ->require_subcommand();
+    return app->add_subcommand("team", "Manage teams")->require_subcommand();
 }
 
-CLI::App* setupAdd(CLI::App* app) {
+CLI::App* setupAdd(CLI::App* app, teams::GraphServiceClient& client) {
     const auto opt = std::make_shared<AddOptions>();
-    return app->add_subcommand("add", "Add team")
+    return app->add_subcommand("add", "Add teams")
         ->alias("a")
-        ->callback([opt]() { ct::add(*opt); });
+        ->callback([opt, &client]() { ct::add(*opt, client); });
 }
 
-CLI::App* setupList(CLI::App* app) {
+CLI::App* setupList(CLI::App* app, teams::GraphServiceClient& client) {
     const auto opt = std::make_shared<ListOptions>();
     return app->add_subcommand("list", "List teams")
         ->alias("ls")
-        ->callback([opt]() { ct::list(*opt); });
+        ->callback([opt, &client]() { ct::list(*opt, client); });
 }
 }  // namespace sub::team
