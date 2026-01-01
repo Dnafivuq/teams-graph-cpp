@@ -76,7 +76,7 @@ private:
         const auto header =
             httplib::Headers{{"Content-Type", "application/json"}};
         const auto json = nlohmann::json(body);
-        std::cout << json.dump(2) << "\n";
+        // std::cout << json.dump(2) << "\n";
         const auto result =
             client_.Post(path, header, json.dump(), "application/json");
 
