@@ -4,8 +4,7 @@
 
 #include <nlohmann/json.hpp>
 #include <optional>
-
-#include "teams_lib/auth/TokenProvider.hpp"
+#include <teams_lib/auth/TokenProvider.hpp>
 
 namespace teams {
 namespace priv {
@@ -15,8 +14,7 @@ class DeviceTokenProvider : public TokenProvider<DeviceTokenProvider> {
 
 public:
     DeviceTokenProvider(DeviceCodeCredential device_code_credential,
-                        std::string scopes)
-
+                        Scopes scopes = "https://graph.microsoft.com/.default")
         : TokenProvider{std::move(device_code_credential), std::move(scopes)} {}
 
 private:

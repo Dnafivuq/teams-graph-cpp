@@ -6,8 +6,8 @@
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include <teams_lib/auth/TokenStorageProvider.hpp>
 
-#include "teams_lib/auth/TokenStorageProvider.hpp"
 namespace teams {
 namespace priv {
 
@@ -16,7 +16,7 @@ class PlainTextTokenStorage
     friend TokenStorageProvider;
 
 public:
-    PlainTextTokenStorage(std::filesystem::path file_path)
+    PlainTextTokenStorage(std::filesystem::path file_path = ".token")
         : TokenStorageProvider<PlainTextTokenStorage>(),
           file_path_(std::move(file_path)) {}
 
