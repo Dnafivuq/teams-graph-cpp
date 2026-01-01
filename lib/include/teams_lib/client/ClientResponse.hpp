@@ -1,6 +1,5 @@
 #pragma once
 #include <expected>
-#include <teams_lib/client/GraphError.hpp>
 #include <teams_lib/common.hpp>
 #include <variant>
 
@@ -12,7 +11,16 @@ struct TransportError {
     std::string message;
 };
 
-using ClientError = std::variant<TransportError, GraphError>;
+struct ParsingError {
+    std::string message;
+};
+
+struct GraphError {
+    HttpStatus status;
+    std::string message;
+};
+
+using ClientError = std::variant<TransportError, ParsingError, GraphError>;
 
 template <typename Resource>
 using ClientResponse = std::expected<Resource, ClientError>;
@@ -20,6 +28,8 @@ using ClientResponse = std::expected<Resource, ClientError>;
 }  // namespace priv
 
 using TransportError = priv::TransportError;
+using ParsingError = priv::ParsingError;
+using GraphError = priv::GraphError;
 
 template <typename Resource>
 using ClientResponse = priv::ClientResponse<Resource>;

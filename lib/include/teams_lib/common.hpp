@@ -7,12 +7,10 @@ namespace teams {
 using HttpHeader = httplib::Headers;
 using HttpClient = httplib::Client;
 using HttpResult = httplib::Result;
+using HttpResponse = httplib::Response;
 using HttpError = httplib::Error;
-using HttpCode = int;
+using HttpStatus = httplib::StatusCode;
 using HttpBody = std::string;
-
-constexpr int HTTP_SUCCESS = 200;
-constexpr int HTTP_FAILURE = 300;
 
 template <typename ResourceType>
 using Collection = std::vector<ResourceType>;
