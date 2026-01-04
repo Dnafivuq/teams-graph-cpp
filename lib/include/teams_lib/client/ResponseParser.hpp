@@ -82,7 +82,6 @@ private:
         const HttpResponse& response) noexcept {
         try {
             const auto json = nlohmann::json::parse(response.body);
-            // std::cout << json.dump(4) << "\n";
             return deserializeJSON<T>(json);
         } catch (const nlohmann::json::exception& e) {
             return std::unexpected(
