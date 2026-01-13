@@ -1,6 +1,18 @@
+cmake_minimum_required(VERSION 3.22)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+find_library(ZSTD_LIBRARY zstd)
+
+if(ZSTD_LIBRARY AND NOT TARGET zstd::libzstd)
+    add_library(zstd::libzstd UNKNOWN IMPORTED)
+    set_target_properties(zstd::libzstd PROPERTIES
+        IMPORTED_LOCATION "${ZSTD_LIBRARY}"
+    )
+endif()
+
 include(FetchContent)
+
+
 FetchContent_Declare(
    httplib
    GIT_REPOSITORY https://github.com/yhirose/cpp-httplib
@@ -30,6 +42,7 @@ target_include_directories( teams_lib
 )
 
 find_package(OpenSSL REQUIRED)
+
 
 target_compile_definitions(teams_lib
     PUBLIC CPPHTTPLIB_OPENSSL_SUPPORT
