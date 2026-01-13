@@ -43,7 +43,6 @@ target_include_directories( teams_lib
 
 find_package(OpenSSL REQUIRED)
 
-
 target_compile_definitions(teams_lib
     PUBLIC CPPHTTPLIB_OPENSSL_SUPPORT
 )

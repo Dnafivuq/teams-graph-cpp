@@ -24,7 +24,7 @@ FetchContent_MakeAvailable(CLI11)
 
 target_link_libraries( teams_cli
     PRIVATE teams_lib
-        PRIVATE CLI11::CLI11
+    PRIVATE CLI11::CLI11
 )
 
 target_include_directories( teams_cli
