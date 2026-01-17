@@ -1,5 +1,6 @@
 #pragma once
 #include <nlohmann/json.hpp>
+#include <optional>
 #include <teams_lib/common.hpp>
 #include <teams_lib/models/ChannelIdentity.hpp>
 #include <teams_lib/models/ItemBody.hpp>
