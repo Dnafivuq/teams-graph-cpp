@@ -9,7 +9,7 @@ if(ZSTD_LIBRARY AND NOT TARGET zstd::libzstd)
     set_target_properties(zstd::libzstd PROPERTIES
         IMPORTED_LOCATION "${ZSTD_LIBRARY}"
     )
-endif() 
+endif()
 
 include(FetchContent)
 
@@ -29,7 +29,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(nlohmann_json)
 
 add_library(teams_lib STATIC
-    src/Test.cpp
     src/serialization/UserIdentity.cpp
     src/serialization/ItemBody.cpp
     src/serialization/ChannelIdentity.cpp
