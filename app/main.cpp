@@ -22,13 +22,13 @@ int main(int argc, char** argv) {
 
     auto* sub_team = sub::team::setup(&app);
     auto* sub_team_list = sub::team::setupList(sub_team, client);
-    auto* sub_team_login = sub::team::setupAdd(&app, client);
+    auto* sub_team_add = sub::team::setupAdd(sub_team, client);
 
     auto* sub_channel = sub::channel::setup(&app);
     auto* sub_channel_list = sub::channel::setupList(sub_channel, client);
 
     auto* sub_post = sub::post::setup(&app);
-    auto* sub_post_list = sub::post::setupAdd(sub_post, client);
+    auto* sub_post_add = sub::post::setupAdd(sub_post, client);
 
     CLI11_PARSE(app, argc, argv);
 }
