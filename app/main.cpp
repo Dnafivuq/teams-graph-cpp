@@ -23,10 +23,11 @@ int main(int argc, char** argv) {
     auto client = teams::GraphServiceClient{credentials, scopes};
 
     auto* sub_team = sub::team::setup(&app);
-    auto* sub_team_list = sub::team::setupList(sub_team, client);
     auto* sub_team_add = sub::team::setupAdd(sub_team, client);
+    auto* sub_team_list = sub::team::setupList(sub_team, client);
 
     auto* sub_channel = sub::channel::setup(&app);
+    auto* sub_channel_add = sub::channel::setupAdd(sub_channel, client);
     auto* sub_channel_list = sub::channel::setupList(sub_channel, client);
 
     auto* sub_post = sub::post::setup(&app);

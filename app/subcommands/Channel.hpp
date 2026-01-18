@@ -5,7 +5,9 @@
 #include "CLI/CLI.hpp"
 
 namespace sub::channel {
-struct AddOptions : opts::BaseAddOptions {};
+struct AddOptions : opts::BaseAddOptions {
+    std::string team;
+};
 struct ListOptions : opts::BaseListOptions {
     std::string team;
 };
