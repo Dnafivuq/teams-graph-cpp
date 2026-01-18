@@ -12,9 +12,11 @@ CLI::App* setup(CLI::App* app) {
 
 CLI::App* setupAdd(CLI::App* app, teams::GraphServiceClient& client) {
     const auto opt = std::make_shared<AddOptions>();
-    return app->add_subcommand("add", "Add channel")
-        ->alias("a")
-        ->callback([opt, &client]() { cc::add(*opt, client); });
+    auto* sub = app->add_subcommand("add", "Add channel")
+                    ->alias("a")
+                    ->callback([opt, &client]() { cc::add(*opt, client); });
+    sub->add_option("-t, --team", opt->team)->required();
+    return sub;
 }
 
 CLI::App* setupList(CLI::App* app, teams::GraphServiceClient& client) {
