@@ -9,9 +9,11 @@ struct AddOptions : opts::BaseAddOptions {
     std::string text;
     std::string team;
     std::string channel;
-
 };
-struct ListOptions : opts::BaseListOptions {};
+struct ListOptions : opts::BaseListOptions {
+    std::string team;
+    std::string channel;
+};
 
 CLI::App* setup(CLI::App*);
 CLI::App* setupAdd(CLI::App*, teams::GraphServiceClient&);

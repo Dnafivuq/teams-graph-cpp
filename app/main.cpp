@@ -29,6 +29,7 @@ int main(int argc, char** argv) {
 
     auto* sub_post = sub::post::setup(&app);
     auto* sub_post_add = sub::post::setupAdd(sub_post, client);
+    auto* sub_post_list = sub::post::setupList(sub_post, client);
 
     CLI11_PARSE(app, argc, argv);
 }
