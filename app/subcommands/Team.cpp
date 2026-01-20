@@ -9,6 +9,18 @@ CLI::App* setup(CLI::App* app) {
     return app->add_subcommand("team", "Manage teams")->require_subcommand();
 }
 
+CLI::App* setupRemove(CLI::App* app, LazyGraphClient& client) {
+    const auto opt = std::make_shared<RemoveOptions>();
+
+    auto* sub = app->add_subcommand("remove", "Delete team")
+                    ->alias("r")
+                    ->callback([opt, &client]() { ct::remove(*opt, *client); });
+
+    sub->add_option("name", opt->names, "Team name")->required();
+
+    return sub;
+}
+
 CLI::App* setupAdd(CLI::App* app, LazyGraphClient& client) {
     const auto opt = std::make_shared<AddOptions>();
 
@@ -16,7 +28,7 @@ CLI::App* setupAdd(CLI::App* app, LazyGraphClient& client) {
                     ->alias("a")
                     ->callback([opt, &client]() { ct::add(*opt, *client); });
 
-    sub->add_option("name", opt->name, "Team name")->required();
+    sub->add_option("name", opt->names, "Team name")->required();
 
     return sub;
 }
