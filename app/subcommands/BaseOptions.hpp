@@ -6,6 +6,6 @@ struct BaseListOptions {};
 struct BaseAddOptions {};
 struct BaseSendOptions {};
 struct BaseShowOptions {};
-struct BaseDeleteOptions {};
+struct BaseRemoveOptions {};
 
 }  // namespace sub::opts
