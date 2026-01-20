@@ -16,14 +16,16 @@ void add(sub::channel::AddOptions const& options,
         std::cerr << "Team does not exist\n";
         return;
     }
+    for (auto name : options.name) {
+        auto channel = teams::Channel{.display_name = name};
+        auto result =
+            client.teams().byId(team_id.value()).channels().post(channel);
 
-    auto channel = teams::Channel{.display_name = options.name};
-    auto result = client.teams().byId(team_id.value()).channels().post(channel);
-
-    if (!result) {
-        std::visit([](const auto& e) { std::cout << e.message << '\n'; },
-                   result.error());
-        return;
+        if (!result) {
+            std::visit([](const auto& e) { std::cout << e.message << '\n'; },
+                       result.error());
+            return;
+        }
     }
 }
 
@@ -34,24 +36,24 @@ void remove(sub::channel::RemoveOptions const& options,
         std::cerr << "Team does not exist\n";
         return;
     }
+    for (const auto& name : options.name) {
+        auto channel_id = utils::getChannelId(team_id.value(), client, name);
+        if (!channel_id.has_value()) {
+            std::cerr << "Team does not exist\n";
+            return;
+        }
 
-    auto channel_id =
-        utils::getChannelId(team_id.value(), client, options.name);
-    if (!channel_id.has_value()) {
-        std::cerr << "Team does not exist\n";
-        return;
-    }
+        auto result = client.teams()
+                          .byId(team_id.value())
+                          .channels()
+                          .byId(channel_id.value())
+                          .remove();
 
-    auto result = client.teams()
-                      .byId(team_id.value())
-                      .channels()
-                      .byId(channel_id.value())
-                      .remove();
-
-    if (!result) {
-        std::visit([](const auto& e) { std::cout << e.message << '\n'; },
-                   result.error());
-        return;
+        if (!result) {
+            std::visit([](const auto& e) { std::cout << e.message << '\n'; },
+                       result.error());
+            return;
+        }
     }
 }
 
