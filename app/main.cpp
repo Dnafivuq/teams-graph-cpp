@@ -1,5 +1,6 @@
 #include <CLI/CLI.hpp>
 
+#include "LazyGraphClient.h"
 #include "subcommands/Channel.hpp"
 #include "subcommands/Post.hpp"
 #include "subcommands/Team.hpp"
@@ -20,7 +21,7 @@ int main(int argc, char** argv) {
 
     auto scopes = teams::Scopes{"offline_access user.read team.readbasic.all"};
 
-    auto client = teams::GraphServiceClient{credentials, scopes};
+    auto client = LazyGraphClient{credentials, scopes};
 
     auto* sub_team = sub::team::setup(&app);
     auto* sub_team_add = sub::team::setupAdd(sub_team, client);

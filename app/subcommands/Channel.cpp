@@ -10,21 +10,21 @@ CLI::App* setup(CLI::App* app) {
         ->require_subcommand();
 }
 
-CLI::App* setupAdd(CLI::App* app, teams::GraphServiceClient& client) {
+CLI::App* setupAdd(CLI::App* app, LazyGraphClient& client) {
     const auto opt = std::make_shared<AddOptions>();
     auto* sub = app->add_subcommand("add", "Add channel")
                     ->alias("a")
-                    ->callback([opt, &client]() { cc::add(*opt, client); });
+                    ->callback([opt, &client]() { cc::add(*opt, *client); });
     sub->add_option("-t, --team", opt->team)->required();
     return sub;
 }
 
-CLI::App* setupList(CLI::App* app, teams::GraphServiceClient& client) {
+CLI::App* setupList(CLI::App* app, LazyGraphClient& client) {
     const auto opt = std::make_shared<ListOptions>();
 
     auto* sub = app->add_subcommand("list", "List channels")
                     ->alias("ls")
-                    ->callback([opt, &client]() { cc::list(*opt, client); });
+                    ->callback([opt, &client]() { cc::list(*opt, *client); });
     sub->add_option("-t, --team", opt->team)->required();
     return sub;
 }

@@ -1,8 +1,8 @@
 #pragma once
-#include <teams_lib/client/GraphServiceClient.hpp>
+#include <CLI/CLI.hpp>
 
 #include "BaseOptions.hpp"
-#include "CLI/CLI.hpp"
+#include "LazyGraphClient.h"
 
 namespace sub::channel {
 struct AddOptions : opts::BaseAddOptions {
@@ -13,7 +13,7 @@ struct ListOptions : opts::BaseListOptions {
 };
 
 CLI::App* setup(CLI::App*);
-CLI::App* setupAdd(CLI::App*, teams::GraphServiceClient&);
-CLI::App* setupList(CLI::App*, teams::GraphServiceClient&);
+CLI::App* setupAdd(CLI::App*, LazyGraphClient&);
+CLI::App* setupList(CLI::App*, LazyGraphClient&);
 
 }  // namespace sub::channel
