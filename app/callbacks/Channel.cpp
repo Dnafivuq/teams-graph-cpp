@@ -8,10 +8,10 @@
 
 namespace callbacks::channel {
 void add(sub::channel::AddOptions const& options,
-         teams::GraphServiceClient& client) {}
+         teams::GraphServiceClient const& client) {}
 
 void list(sub::channel::ListOptions const& options,
-          teams::GraphServiceClient& client) {
+          teams::GraphServiceClient const& client) {
     auto team_id = utils::getTeamId(options.team, client);
     if (team_id.has_value()) {
         auto const channels =

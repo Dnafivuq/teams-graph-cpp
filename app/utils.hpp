@@ -5,9 +5,9 @@
 
 namespace utils {
 std::optional<std::string> getTeamId(const std::string& team_name,
-                                     teams::GraphServiceClient& client);
+                                     teams::GraphServiceClient const& client);
 
 std::optional<std::string> getChannelId(const std::string& team_id,
-                                        teams::GraphServiceClient& client,
+                                        teams::GraphServiceClient const& client,
                                         const std::string& channel_name);
 }  // namespace utils

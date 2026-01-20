@@ -7,7 +7,7 @@
 
 namespace callbacks::post {
 void add(sub::post::AddOptions const& options,
-         teams::GraphServiceClient& client) {
+         teams::GraphServiceClient const& client) {
     // TODO!
     // Channel and team is currently hardcoded by id
 
@@ -23,7 +23,7 @@ void add(sub::post::AddOptions const& options,
             .post(msg);
 }
 void list(sub::post::ListOptions const& options,
-          teams::GraphServiceClient& client) {
+          teams::GraphServiceClient const& client) {
     auto team_id = utils::getTeamId(options.team, client);
     if (!team_id.has_value()) {
         std::cerr << "Team does not exist\n";

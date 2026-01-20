@@ -5,10 +5,10 @@
 
 namespace callbacks::team {
 void add(sub::team::AddOptions const& options,
-         teams::GraphServiceClient& client) {}
+         teams::GraphServiceClient const& client) {}
 
 void list(sub::team::ListOptions const& options,
-          teams::GraphServiceClient& client) {
+          teams::GraphServiceClient const& client) {
     auto const teams = client.teams().get();
     // std::println("List of teams:");
     std::cout << "List of teams:\n";
