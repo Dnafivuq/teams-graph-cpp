@@ -1,11 +1,15 @@
 #pragma once
 #include <CLI/CLI.hpp>
+#include <string>
+#include <teams_lib/client/GraphServiceClient.hpp>
 
 #include "BaseOptions.hpp"
 #include "LazyGraphClient.h"
 
 namespace sub::team {
-struct AddOptions : opts::BaseAddOptions {};
+struct AddOptions : opts::BaseAddOptions {
+    std::string name;
+};
 struct ListOptions : opts::BaseListOptions {};
 
 CLI::App* setup(CLI::App*);

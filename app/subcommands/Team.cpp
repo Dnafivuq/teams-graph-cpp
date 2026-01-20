@@ -11,9 +11,14 @@ CLI::App* setup(CLI::App* app) {
 
 CLI::App* setupAdd(CLI::App* app, LazyGraphClient& client) {
     const auto opt = std::make_shared<AddOptions>();
-    return app->add_subcommand("add", "Add teams")
-        ->alias("a")
-        ->callback([opt, &client]() { ct::add(*opt, *client); });
+
+    auto* sub = app->add_subcommand("add", "Add teams")
+                    ->alias("a")
+                    ->callback([opt, &client]() { ct::add(*opt, *client); });
+
+    sub->add_option("name", opt->name, "Team name")->required();
+
+    return sub;
 }
 
 CLI::App* setupList(CLI::App* app, LazyGraphClient& client) {
