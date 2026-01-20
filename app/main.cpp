@@ -13,8 +13,8 @@ int main(int argc, char** argv) {
     argv = app.ensure_utf8(argv);
 
     auto credentials =
-        teams::DeviceCodeCredential{"cbcda674-1840-429c-88af-b400689789d6",
-                                    "e3f095a1-d977-400f-943d-f82bcc743564"};
+        teams::DeviceCodeCredential{"078cf7f9-6a56-48fe-afa7-39582cbda561",
+                                    "c573277f-2096-455c-b284-13a31ec76252"};
 
     auto scopes = teams::Scopes{"offline_access user.read team.readbasic.all"};
 
