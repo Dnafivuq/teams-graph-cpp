@@ -1,21 +1,22 @@
 #include "Post.hpp"
 
-#include <optional>
 #include <ranges>
+#include <string>
 #include <variant>
 
 #include "utils.hpp"
 
 namespace callbacks::post {
-void sendMessage(auto channel_id, auto team_id, const auto& text,
-                 const auto& client) {
+void sendMessage(std::string channel_id, std::string team_id,
+                 const std::string& text,
+                 teams::GraphServiceClient const& client) {
     auto msg = teams::Message{
         .body = teams::priv::ItemBody{.content = text, .content_type = "text"}};
 
     auto result = client.teams()
-                      .byId(team_id.value())
+                      .byId(team_id)
                       .channels()
-                      .byId(channel_id.value())
+                      .byId(channel_id)
                       .messages()
                       .post(msg);
 
@@ -43,7 +44,8 @@ void add(sub::post::AddOptions const& options,
                 return;
             }
 
-            sendMessage(channel_id, team_id, options.text, client);
+            sendMessage(channel_id.value(), team_id.value(), options.text,
+                        client);
         }
     } else {
         if (options.team.size() != options.channel.size()) {
@@ -68,7 +70,8 @@ void add(sub::post::AddOptions const& options,
                 return;
             }
 
-            sendMessage(channel_id, team_id, options.text, client);
+            sendMessage(channel_id.value(), team_id.value(), options.text,
+                        client);
         }
     }
     // auto team_id = utils::getTeamId(options.team, client);
