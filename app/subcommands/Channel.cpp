@@ -15,6 +15,7 @@ CLI::App* setupAdd(CLI::App* app, LazyGraphClient& client) {
     auto* sub = app->add_subcommand("add", "Add channel")
                     ->alias("a")
                     ->callback([opt, &client]() { cc::add(*opt, *client); });
+    sub->add_option("name", opt->name, "Channel name")->required();
     sub->add_option("-t, --team", opt->team)->required();
     return sub;
 }
