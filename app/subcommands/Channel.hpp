@@ -1,5 +1,6 @@
 #pragma once
 #include <CLI/CLI.hpp>
+#include <string>
 
 #include "BaseOptions.hpp"
 #include "LazyGraphClient.h"
@@ -7,6 +8,7 @@
 namespace sub::channel {
 struct AddOptions : opts::BaseAddOptions {
     std::string team;
+    std::string name;
 };
 struct ListOptions : opts::BaseListOptions {
     std::string team;
