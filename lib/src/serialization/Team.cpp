@@ -6,9 +6,6 @@ namespace teams::priv {
 
 void to_json(  // NOLINT(readability-identifier-naming)
     nlohmann::json& json, const Team& team) {
-    // json = nlohmann::json{{"displayName", team.display_name},
-    //                       {"description", team.description}};
-
     if (team.id && !team.id.value().empty()) {
         json["id"] = team.id;
     }

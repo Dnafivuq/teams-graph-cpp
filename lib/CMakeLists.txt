@@ -35,6 +35,7 @@ add_library(teams_lib STATIC
     src/serialization/Message.cpp
     src/serialization/Channel.cpp
     src/serialization/Team.cpp
+    src/serialization/ConversationMember.cpp
 )
 
 target_include_directories( teams_lib

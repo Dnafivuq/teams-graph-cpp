@@ -1,0 +1,24 @@
+#pragma once
+#include <nlohmann/json.hpp>
+#include <optional>
+#include <string>
+
+namespace teams {
+namespace priv {
+
+struct ConversationMember {
+    std::optional<std::string> id;
+    std::optional<std::string> membership_id;
+    std::optional<std::string> display_name;
+    std::optional<std::string> email;
+    std::optional<std::vector<std::string>> roles;
+};
+
+void to_json(  // NOLINT(readability-identifier-naming)
+    nlohmann::json& json, const ConversationMember& team);
+void from_json(  // NOLINT(readability-identifier-naming)
+    const nlohmann::json& json, ConversationMember& team);
+
+}  // namespace priv
+using ConversationMember = priv::ConversationMember;
+}  // namespace teams
