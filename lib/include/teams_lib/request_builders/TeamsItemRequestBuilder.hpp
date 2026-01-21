@@ -20,5 +20,10 @@ public:
         return ChannelsRequestBuilder<ClientType>{client(),
                                                   baseUrl() + "/channels"};
     }
+
+    ConversationMembersRequestBuilder<ClientType> members() {
+        return MessagesRequestBuilder<ClientType>{client(),
+                                                  baseUrl() + "/members"};
+    }
 };
 }  // namespace teams::priv
