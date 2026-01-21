@@ -1,6 +1,7 @@
 #pragma once
 #include <teams_lib/client/ClientResponse.hpp>
 #include <teams_lib/request_builders/TeamsRequestBuilder.hpp>
+#include <teams_lib/request_builders/UsersRequestBuilder.hpp>
 
 namespace teams::priv {
 
@@ -18,8 +19,9 @@ public:
     const SessionManager& sessionManager() const { return session_manager_; }
 
     auto teams() const { return TeamsRequestBuilder<base_t>{this, "/teams"}; }
-    // UsersItemRequestBuilder me() const { return {this, "/me"}; }
-    // UsersRequestBuilder users() const { return {this, "/users"}; }
+    auto me() const { return UsersItemRequestBuilder<base_t>{this, "/me"}; }
+    auto users() const { return UsersRequestBuilder<base_t>{this, "/users"}; }
+    auto chats() const { return ChatsRequestBuilder<base_t>{this, "/chats"}; }
 
     template <typename T>
     ClientResponse<T> get(const URL& url) const {
