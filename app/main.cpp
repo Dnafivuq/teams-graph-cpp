@@ -2,6 +2,7 @@
 
 #include "LazyGraphClient.h"
 #include "subcommands/Channel.hpp"
+#include "subcommands/Member.hpp"
 #include "subcommands/Post.hpp"
 #include "subcommands/Team.hpp"
 #include "subcommands/Template.hpp"
@@ -34,6 +35,11 @@ int main(int argc, char** argv) {
     auto* sub_channel_add = sub::channel::setupAdd(sub_channel, client);
     auto* sub_channel_list = sub::channel::setupList(sub_channel, client);
     auto* sub_channel_remove = sub::channel::setupRemove(sub_channel, client);
+
+    auto* sub_member = sub::member::setup(&app);
+    auto* sub_member_add = sub::member::setupAdd(sub_member, client);
+    auto* sub_member_list = sub::member::setupList(sub_member, client);
+    auto* sub_member_remove = sub::member::setupRemove(sub_member, client);
 
     auto* sub_post = sub::post::setup(&app);
     auto* sub_post_add = sub::post::setupAdd(sub_post, client);

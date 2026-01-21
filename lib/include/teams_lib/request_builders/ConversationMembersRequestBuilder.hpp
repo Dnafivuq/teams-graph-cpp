@@ -19,15 +19,15 @@ public:
                                                URL url)
         : base_t(client, std::move(url)) {}
 
-    ClientResponse<void> post(const ConversationMember& body) const noexcept {
+    ClientResponse<ConversationMember> post(const ConversationMember& body) const noexcept {
         return client()->template post<ConversationMember, ConversationMember>(
             baseUrl(), body);
     }
 
     ClientResponse<void> remove(const ConversationMember& body) const noexcept {
         return client()
-            ->template remove<ConversationMember, ConversationMember>(
-                baseUrl() + body.membership_id.value());
+            ->template remove<void>(
+                baseUrl() + "/" + body.membership_id.value());
     }
 };
 }  // namespace teams::priv
