@@ -8,8 +8,10 @@ add_executable( teams_cli
     callbacks/Team.cpp
     callbacks/Channel.cpp
     callbacks/Post.cpp
+    callbacks/Member.cpp
 
     subcommands/Team.cpp
+    subcommands/Member.cpp
     subcommands/Channel.cpp
     subcommands/Post.cpp
 

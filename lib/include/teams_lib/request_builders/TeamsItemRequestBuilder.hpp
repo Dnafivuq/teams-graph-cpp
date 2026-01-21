@@ -22,7 +22,7 @@ public:
     }
 
     ConversationMembersRequestBuilder<ClientType> members() {
-        return MessagesRequestBuilder<ClientType>{client(),
+        return ConversationMembersRequestBuilder<ClientType>{client(),
                                                   baseUrl() + "/members"};
     }
 };
