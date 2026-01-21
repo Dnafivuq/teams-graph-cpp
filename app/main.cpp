@@ -3,6 +3,7 @@
 #include "subcommands/Channel.hpp"
 #include "subcommands/Post.hpp"
 #include "subcommands/Team.hpp"
+#include "subcommands/Template.hpp"
 #include "subcommands/UserGroup.hpp"
 
 // Based on the example here but in classes
@@ -43,6 +44,18 @@ int main(int argc, char** argv) {
         sub::automatization::UserGroup::setupList(sub_auto_user_group, client);
     auto* sub_auto_user_group_send =
         sub::automatization::UserGroup::setupSend(sub_auto_user_group, client);
+
+    auto* sub_auto_template = sub::automatization::Template::setup(&app);
+    auto* sub_auto_template_add =
+        sub::automatization::Template::setupAdd(sub_auto_template, client);
+    auto* sub_auto_template_delete =
+        sub::automatization::Template::setupDelete(sub_auto_template, client);
+    auto* sub_auto_template_show =
+        sub::automatization::Template::setupShow(sub_auto_template, client);
+    auto* sub_auto_template_list =
+        sub::automatization::Template::setupList(sub_auto_template, client);
+    auto* sub_auto_template_send =
+        sub::automatization::Template::setupSend(sub_auto_template, client);
 
     CLI11_PARSE(app, argc, argv);
 }
