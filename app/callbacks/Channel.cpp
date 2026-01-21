@@ -75,34 +75,6 @@ void remove(sub::channel::RemoveOptions const& options,
     }
 }
 
-void remove(sub::channel::RemoveOptions const& options,
-            teams::GraphServiceClient const& client) {
-    auto team_id = utils::getTeamId(options.team, client);
-    if (!team_id.has_value()) {
-        std::cerr << "Team does not exist\n";
-        return;
-    }
-
-    auto channel_id =
-        utils::getChannelId(team_id.value(), client, options.name);
-    if (!channel_id.has_value()) {
-        std::cerr << "Team does not exist\n";
-        return;
-    }
-
-    auto result = client.teams()
-                      .byId(team_id.value())
-                      .channels()
-                      .byId(channel_id.value())
-                      .remove();
-
-    if (!result) {
-        std::visit([](const auto& e) { std::cout << e.message << '\n'; },
-                   result.error());
-        return;
-    }
-}
-
 void list(sub::channel::ListOptions const& options,
           teams::GraphServiceClient const& client) {
     auto team_id = utils::getTeamId(options.team, client);
