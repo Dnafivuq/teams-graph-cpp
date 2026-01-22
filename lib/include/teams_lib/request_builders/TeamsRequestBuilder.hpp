@@ -17,8 +17,8 @@ public:
         : base_t(client, std::move(url)) {}
 
     TeamsItemRequestBuilder<ClientType> byId(const ID& team_id) {
-        return TeamsItemRequestBuilder<ClientType>{client(),
-                                                   baseUrl() + "/" + team_id};
+        return TeamsItemRequestBuilder<ClientType>{
+            client(), baseUrl() + "/" + team_id, std::move(team_id)};
     }
 
     ClientResponse<void> post(const Team& body) const noexcept {

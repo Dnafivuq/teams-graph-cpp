@@ -13,8 +13,9 @@ class TeamsItemRequestBuilder : public RequestBuilder<ClientType, Team> {
     using base_t::client;
 
 public:
-    explicit TeamsItemRequestBuilder(const ClientType* client, URL base_url)
-        : base_t{client, std::move(base_url)} {}
+    explicit TeamsItemRequestBuilder(const ClientType* client, URL base_url,
+                                     ID team_id)
+        : base_t{client, std::move(base_url)}, team_id_{std::move(team_id)} {}
 
     ChannelsRequestBuilder<ClientType> channels() {
         return ChannelsRequestBuilder<ClientType>{client(),
@@ -22,8 +23,16 @@ public:
     }
 
     ConversationMembersRequestBuilder<ClientType> members() {
-        return ConversationMembersRequestBuilder<ClientType>{client(),
-                                                  baseUrl() + "/members"};
+        return ConversationMembersRequestBuilder<ClientType>{
+            client(), baseUrl() + "/members"};
     }
+
+    ClientResponse<void> remove() const noexcept {
+        return client()->template remove<void>(
+            std::format("groups/{}", team_id_));
+    }
+
+private:
+    ID team_id_;
 };
 }  // namespace teams::priv
