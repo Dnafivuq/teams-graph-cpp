@@ -14,10 +14,10 @@ CLI::App* setupAdd(CLI::App* app, LazyGraphClient& client) {
     const auto opt = std::make_shared<AddOptions>();
     auto* sub = app->add_subcommand("add", "Add group")
                     ->alias("a")
-                    ->callback([opt, &client]() { caUG::add(*opt, *client); });
+                    ->callback([opt, &client]() { caUG::add(*opt); });
     sub->add_option("-n, --name", opt->name, "Name of the group")->required();
-    sub->add_option("-a, --addressees", opt->addressees,
-                    "Target addressees (email addresses)")
+    sub->add_option("-m, --members", opt->members,
+                    "group members (email addresses)")
         ->required()
         ->expected(-1);
     return sub;
@@ -27,24 +27,23 @@ CLI::App* setupList(CLI::App* app, LazyGraphClient& client) {
     const auto opt = std::make_shared<ListOptions>();
     return app->add_subcommand("list", "List groups")
         ->alias("ls")
-        ->callback([opt, &client]() { caUG::list(*opt, *client); });
+        ->callback([opt, &client]() { caUG::list(*opt); });
 }
 
 CLI::App* setupShow(CLI::App* app, LazyGraphClient& client) {
     const auto opt = std::make_shared<ShowOptions>();
     auto* sub = app->add_subcommand("show", "Show members of the group")
                     ->alias("sh")
-                    ->callback([opt, &client]() { caUG::show(*opt, *client); });
+                    ->callback([opt, &client]() { caUG::show(*opt); });
     sub->add_option("-n, --name", opt->name, "Name of the group")->required();
     return sub;
 }
 
 CLI::App* setupRemove(CLI::App* app, LazyGraphClient& client) {
     const auto opt = std::make_shared<RemoveOptions>();
-    auto* sub =
-        app->add_subcommand("remove", "Remove group")
-            ->alias("d")
-            ->callback([opt, &client]() { caUG::remove(*opt, *client); });
+    auto* sub = app->add_subcommand("remove", "Remove group")
+                    ->alias("d")
+                    ->callback([opt, &client]() { caUG::remove(*opt); });
     sub->add_option("-n, --name", opt->name, "Name of the group")->required();
     return sub;
 }

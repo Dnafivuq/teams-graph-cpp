@@ -8,7 +8,7 @@
 namespace sub::automatization::UserGroup {
 struct AddOptions : opts::BaseAddOptions {
     std::string name;
-    std::vector<std::string> addressees;
+    std::vector<std::string> members;
 };
 struct ListOptions : opts::BaseListOptions {};
 struct RemoveOptions : opts::BaseRemoveOptions {
