@@ -32,7 +32,7 @@ void to_json(  // NOLINT(readability-identifier-naming)
                             member.history_visibility_start.value()),
                         .000);
     } else {
-        json["visibleHistoryStartDateTime"] = "0001-01-01T00:00:00Z";
+        // json["visibleHistoryStartDateTime"] = "0001-01-01T00:00:00Z";
     }
 
     json["@odata.type"] = "#microsoft.graph.aadUserConversationMember";

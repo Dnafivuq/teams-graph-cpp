@@ -9,11 +9,13 @@ add_executable( teams_cli
     callbacks/Channel.cpp
     callbacks/Post.cpp
     callbacks/Member.cpp
+    callbacks/Chat.cpp
 
     subcommands/Team.cpp
     subcommands/Member.cpp
     subcommands/Channel.cpp
     subcommands/Post.cpp
+    subcommands/Chat.cpp
 
 )
 

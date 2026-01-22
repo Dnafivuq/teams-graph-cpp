@@ -5,6 +5,8 @@
 #include "subcommands/Member.hpp"
 #include "subcommands/Post.hpp"
 #include "subcommands/Team.hpp"
+#include "subcommands/Chat.hpp"
+
 
 // Based on the example here but in classes
 // https://github.com/CLIUtils/CLI11/tree/main/examples/subcom_in_files
@@ -40,6 +42,10 @@ int main(int argc, char** argv) {
     auto* sub_member_add = sub::member::setupAdd(sub_member, client);
     auto* sub_member_list = sub::member::setupList(sub_member, client);
     auto* sub_member_remove = sub::member::setupRemove(sub_member, client);
+
+    auto* sub_chat = sub::chat::setup(&app);
+    auto* sub_chat_add = sub::chat::setupAdd(sub_chat, client);
+    auto* sub_chat_list = sub::chat::setupList(sub_chat, client);
 
     auto* sub_post = sub::post::setup(&app);
     auto* sub_post_add = sub::post::setupAdd(sub_post, client);
