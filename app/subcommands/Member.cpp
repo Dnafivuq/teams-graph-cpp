@@ -13,7 +13,7 @@ CLI::App* setup(CLI::App* app) {
 
 CLI::App* setupAdd(CLI::App* app, LazyGraphClient& client) {
     const auto opt = std::make_shared<AddOptions>();
-    auto* sub = app->add_subcommand("add", "Add channel")
+    auto* sub = app->add_subcommand("add", "Add members")
                     ->alias("a")
                     ->callback([opt, &client]() { cm::add(*opt, *client); });
     sub->add_option("-c, --channel", opt->channel, "Channel name");
@@ -26,7 +26,7 @@ CLI::App* setupAdd(CLI::App* app, LazyGraphClient& client) {
 CLI::App* setupList(CLI::App* app, LazyGraphClient& client) {
     const auto opt = std::make_shared<ListOptions>();
 
-    auto* sub = app->add_subcommand("list", "List channels")
+    auto* sub = app->add_subcommand("list", "List members")
                     ->alias("ls")
                     ->callback([opt, &client]() { cm::list(*opt, *client); });
     sub->add_option("-t, --team", opt->team)->required();
@@ -37,7 +37,7 @@ CLI::App* setupList(CLI::App* app, LazyGraphClient& client) {
 
 CLI::App* setupRemove(CLI::App* app, LazyGraphClient& client) {
     const auto opt = std::make_shared<RemoveOptions>();
-    auto* sub = app->add_subcommand("remove", "Delete channel")
+    auto* sub = app->add_subcommand("remove", "Delete members")
                     ->alias("r")
                     ->callback([opt, &client]() { cm::remove(*opt, *client); });
     sub->add_option("email", opt->email);
