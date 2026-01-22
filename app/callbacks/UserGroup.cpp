@@ -195,10 +195,12 @@ void send(sub::automatization::UserGroup::SendOptions const& options,
             auto me = teams::ConversationMember{
                 .id = std::string{client.me().get().value().id.value()},
                 .roles = std::vector<std::string>{"owner"}};
+            me.history_visibility_start.reset();
 
             auto other = teams::ConversationMember{
                 .id = std::string{userId},
                 .roles = std::vector<std::string>{"owner"}};
+            other.history_visibility_start.reset();
 
             auto chat = teams::Chat{
                 .type = std::string{"oneOnOne"},
@@ -222,8 +224,7 @@ void send(sub::automatization::UserGroup::SendOptions const& options,
                                       << '\n';
                         } else if constexpr (std::is_same_v<
                                                  T, teams::priv::GraphError>) {
-                            std::cerr << "Graph error: " << err.message << "\n"
-                                      << err.status << '\n';
+                            std::cerr << "Graph error: " << err.message << '\n';
                         }
                     },
                     createdChat.error());
@@ -231,7 +232,6 @@ void send(sub::automatization::UserGroup::SendOptions const& options,
                 return;
             }
             auto chat_id = createdChat.value().id.value();
-            std::cout << "successfuly created chat\n";
 
             auto msg = teams::Message{
                 .body = teams::priv::ItemBody{.content = options.text,
