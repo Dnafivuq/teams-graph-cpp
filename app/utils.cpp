@@ -1,6 +1,17 @@
 #include "utils.hpp"
 
 namespace utils {
+
+fs::path find_repo_root(fs::path start) {
+    while (!start.empty()) {
+        if (fs::exists(start / ".git")) {
+            return start;
+        }
+        start = start.parent_path();
+    }
+    throw std::runtime_error("Repo root not found");
+}
+
 std::optional<std::string> getTeamId(const std::string& team_name,
                                      teams::GraphServiceClient const& client) {
     auto const teams = client.teams().get();

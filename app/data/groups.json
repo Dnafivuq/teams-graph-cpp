@@ -16,6 +16,15 @@
                 "MichalBloch@pzsp2z11.onmicrosoft.com"
             ],
             "name": "real2"
+        },
+        {
+            "members": [
+                "NataliaDudzinska@pzsp2z11.onmicrosoft.com",
+                "MateuszGulinski@pzsp2z11.onmicrosoft.com",
+                "MichalBloch@pzsp2z11.onmicrosoft.com",
+                "PaweSpirydowicz@pzsp2z11.onmicrosoft.com"
+            ],
+            "name": "all"
         }
     ]
 }
