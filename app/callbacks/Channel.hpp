@@ -5,7 +5,9 @@
 
 namespace callbacks::channel {
 
-void list(sub::channel::ListOptions const&, teams::GraphServiceClient&);
-void add(sub::channel::AddOptions const&, teams::GraphServiceClient&);
+void list(sub::channel::ListOptions const&, teams::GraphServiceClient const&);
+void add(sub::channel::AddOptions const&, teams::GraphServiceClient const&);
+void remove(sub::channel::RemoveOptions const&,
+            teams::GraphServiceClient const&);
 
 }  // namespace callbacks::channel

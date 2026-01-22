@@ -1,20 +1,24 @@
 #pragma once
-#include <teams_lib/client/GraphServiceClient.hpp>
+#include <CLI/CLI.hpp>
+#include <string>
+#include <vector>
 
 #include "BaseOptions.hpp"
-#include "CLI/CLI.hpp"
+#include "LazyGraphClient.h"
 
 namespace sub::post {
 struct AddOptions : opts::BaseAddOptions {
     std::string text;
+    std::vector<std::string> team;
+    std::vector<std::string> channel;
+};
+struct ListOptions : opts::BaseListOptions {
     std::string team;
     std::string channel;
-
 };
-struct ListOptions : opts::BaseListOptions {};
 
 CLI::App* setup(CLI::App*);
-CLI::App* setupAdd(CLI::App*, teams::GraphServiceClient&);
-CLI::App* setupList(CLI::App*, teams::GraphServiceClient&);
+CLI::App* setupAdd(CLI::App*, LazyGraphClient&);
+CLI::App* setupList(CLI::App*, LazyGraphClient&);
 
 }  // namespace sub::post

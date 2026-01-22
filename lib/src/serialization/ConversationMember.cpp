@@ -8,10 +8,10 @@ namespace teams::priv {
 void to_json(  // NOLINT(readability-identifier-naming)
     nlohmann::json& json, const ConversationMember& member) {
     if (member.id && !member.id.value().empty()) {
-        json["userId"] = member.id;
+        json["userId"] = member.id.value();
     }
     if (member.membership_id && !member.membership_id.value().empty()) {
-        json["id"] = member.id;
+        json["id"] = member.id.value();
     }
     if (member.display_name && !member.display_name.value().empty()) {
         json["displayName"] = member.display_name.value();
@@ -19,9 +19,20 @@ void to_json(  // NOLINT(readability-identifier-naming)
     if (member.email && !member.email.value().empty()) {
         json["email"] = member.email.value();
     }
-    if (member.roles && !member.roles.value().empty()) {
-        json["roles"] = member.roles;
+
+    // roles can be empty and are still meaningful for graph api
+    if (member.roles) {
+        json["roles"] = member.roles.value();
     }
+
+    if (member.history_visibility_start) {
+        json["visibleHistoryStartDateTime"] =
+            std::format("{:%FT%T}.{:03}Z",
+                        floor<std::chrono::seconds>(
+                            member.history_visibility_start.value()),
+                        .000);
+    }
+
     json["@odata.type"] = "#microsoft.graph.aadUserConversationMember";
     if (member.id && !member.id.value().empty()) {
         json["user@odata.bind"] = std::format(

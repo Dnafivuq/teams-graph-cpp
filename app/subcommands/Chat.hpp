@@ -6,22 +6,16 @@
 #include "BaseOptions.hpp"
 #include "LazyGraphClient.h"
 
-namespace sub::channel {
-struct RemoveOptions : opts::BaseRemoveOptions {
-    std::string team;
-    std::vector<std::string> name;
-};
+namespace sub::chat {
 struct AddOptions : opts::BaseAddOptions {
-    std::string team;
-    std::vector<std::string> name;
+    std::vector<std::string> emails;
 };
 struct ListOptions : opts::BaseListOptions {
-    std::string team;
+    std::vector<std::string> emails;
 };
 
 CLI::App* setup(CLI::App*);
 CLI::App* setupAdd(CLI::App*, LazyGraphClient&);
 CLI::App* setupList(CLI::App*, LazyGraphClient&);
-CLI::App* setupRemove(CLI::App*, LazyGraphClient&);
 
-}  // namespace sub::channel
+}  // namespace sub::chat
