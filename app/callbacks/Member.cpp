@@ -140,25 +140,45 @@ void remove(sub::member::RemoveOptions const& options,
 
 void list(sub::member::ListOptions const& options,
           teams::GraphServiceClient const& client) {
-    auto team_id = utils::getTeamId(options.team, client);
-    if (team_id.has_value()) {
-        auto const channels =
-            client.teams().byId(team_id.value()).channels().get();
+    std::vector<std::future<void>> futures;
 
-        // std::println("List of channels:");
-        std::cout << "List of channels:\n";
-        if (channels) {
-            for (auto const [idx, channel] :
-                 std::views::enumerate(channels.value())) {
-                // std::println("{}. {}", idx,
-                // channel.display_name.value());
-                std::cout << idx << ". " << channel.display_name.value()
-                          << "\n";
-            }
-        }
+    auto team_id = utils::getTeamId(options.team, client);
+    if (!team_id.has_value()) {
+        std::cerr << "Team does not exist\n";
+        return;
+    }
+    std::optional<std::string> channel_id;
+    if (options.channel != "") {
+        channel_id = utils::getChannelId(*team_id, client, options.channel);
+    }
+    if (!team_id.has_value() && options.channel != "") {
+        std::cerr << "Team does not exist\n";
+        return;
+    }
+
+    teams::ClientResponse<std::vector<teams::ConversationMember>> result;
+    if (options.channel == "") {
+        result = client.teams().byId(*team_id).members().get();
     } else {
-        // std::println("There is no team with the given name.");
-        std::cout << "There is no team with the given name.\n";
+        result = client.teams()
+                     .byId(*team_id)
+                     .channels()
+                     .byId(*channel_id)
+                     .members()
+                     .get();
+    };
+
+    if (!result) {
+        std::visit([](const auto& e) { std::cout << e.message << '\n'; },
+                   result.error());
+        return;
+    }
+
+    std::cout << "List of members\n";
+    for (auto const [idx, member] : std::views::enumerate(result.value())) {
+        if (member.display_name) {
+            std::cout << idx << ". " << member.display_name.value() << "\n";
+        }
     }
 }
 }  // namespace callbacks::member
