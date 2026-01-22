@@ -4,6 +4,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_executable( teams_cli
     main.cpp
     utils.cpp
+    utils.cpp
 
     callbacks/Team.cpp
     callbacks/Channel.cpp
@@ -13,6 +14,7 @@ add_executable( teams_cli
     callbacks/Member.cpp
 
     subcommands/Team.cpp
+    subcommands/Member.cpp
     subcommands/Member.cpp
     subcommands/Channel.cpp
     subcommands/Post.cpp

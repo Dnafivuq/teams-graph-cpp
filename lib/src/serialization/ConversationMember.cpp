@@ -31,10 +31,9 @@ void to_json(  // NOLINT(readability-identifier-naming)
                         floor<std::chrono::seconds>(
                             member.history_visibility_start.value()),
                         .000);
+    } else {
+        json["visibleHistoryStartDateTime"] = "0001-01-01T00:00:00Z";
     }
-    // else {
-    //     json["visibleHistoryStartDateTime"] = "0001-01-01T00:00:00Z";
-    // }
 
     json["@odata.type"] = "#microsoft.graph.aadUserConversationMember";
     if (member.id && !member.id.value().empty()) {
