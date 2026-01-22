@@ -29,7 +29,7 @@ public:
 
     ClientResponse<void> remove() const noexcept {
         return client()->template remove<void>(
-            std::format("groups/{}", team_id_));
+            std::format("/groups/{}", team_id_));
     }
 
 private:
