@@ -3,6 +3,7 @@
 
 #include "BaseOptions.hpp"
 #include "CLI/CLI.hpp"
+#include "LazyGraphClient.h"
 
 namespace sub::automatization::UserGroup {
 struct AddOptions : opts::BaseAddOptions {
@@ -10,7 +11,7 @@ struct AddOptions : opts::BaseAddOptions {
     std::vector<std::string> addressees;
 };
 struct ListOptions : opts::BaseListOptions {};
-struct DeleteOptions : opts::BaseDeleteOptions {
+struct RemoveOptions : opts::BaseRemoveOptions {
     std::string name;
 };
 struct ShowOptions : opts::BaseShowOptions {
@@ -22,10 +23,10 @@ struct SendOptions : opts::BaseSendOptions {
 };
 
 CLI::App* setup(CLI::App*);
-CLI::App* setupAdd(CLI::App*, teams::GraphServiceClient&);
-CLI::App* setupList(CLI::App*, teams::GraphServiceClient&);
-CLI::App* setupSend(CLI::App*, teams::GraphServiceClient&);
-CLI::App* setupShow(CLI::App*, teams::GraphServiceClient&);
-CLI::App* setupDelete(CLI::App*, teams::GraphServiceClient&);
+CLI::App* setupAdd(CLI::App*, LazyGraphClient&);
+CLI::App* setupList(CLI::App*, LazyGraphClient&);
+CLI::App* setupSend(CLI::App*, LazyGraphClient&);
+CLI::App* setupShow(CLI::App*, LazyGraphClient&);
+CLI::App* setupRemove(CLI::App*, LazyGraphClient&);
 
 }  // namespace sub::automatization::UserGroup

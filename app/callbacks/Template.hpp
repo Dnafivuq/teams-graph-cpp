@@ -6,14 +6,14 @@
 namespace callbacks::automatization::Template {
 
 void list(sub::automatization::Template::ListOptions const&,
-          teams::GraphServiceClient&);
+          teams::GraphServiceClient const&);
 void add(sub::automatization::Template::AddOptions const&,
-         teams::GraphServiceClient&);
+         teams::GraphServiceClient const&);
 void send(sub::automatization::Template::SendOptions const&,
-          teams::GraphServiceClient&);
+          teams::GraphServiceClient const&);
 void show(sub::automatization::Template::ShowOptions const&,
-          teams::GraphServiceClient&);
-void del(sub::automatization::Template::DeleteOptions const&,
-         teams::GraphServiceClient&);
+          teams::GraphServiceClient const&);
+void remove(sub::automatization::Template::RemoveOptions const&,
+            teams::GraphServiceClient const&);
 
 }  // namespace callbacks::automatization::Template

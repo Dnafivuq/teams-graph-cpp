@@ -48,8 +48,8 @@ int main(int argc, char** argv) {
     auto* sub_auto_user_group = sub::automatization::UserGroup::setup(&app);
     auto* sub_auto_user_group_add =
         sub::automatization::UserGroup::setupAdd(sub_auto_user_group, client);
-    auto* sub_auto_user_group_delete =
-        sub::automatization::UserGroup::setupDelete(sub_auto_user_group,
+    auto* sub_auto_user_group_remove =
+        sub::automatization::UserGroup::setupRemove(sub_auto_user_group,
                                                     client);
     auto* sub_auto_user_group_show =
         sub::automatization::UserGroup::setupShow(sub_auto_user_group, client);
@@ -61,8 +61,8 @@ int main(int argc, char** argv) {
     auto* sub_auto_template = sub::automatization::Template::setup(&app);
     auto* sub_auto_template_add =
         sub::automatization::Template::setupAdd(sub_auto_template, client);
-    auto* sub_auto_template_delete =
-        sub::automatization::Template::setupDelete(sub_auto_template, client);
+    auto* sub_auto_template_remove =
+        sub::automatization::Template::setupRemove(sub_auto_template, client);
     auto* sub_auto_template_show =
         sub::automatization::Template::setupShow(sub_auto_template, client);
     auto* sub_auto_template_list =
