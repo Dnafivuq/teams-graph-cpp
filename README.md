@@ -38,13 +38,17 @@ This is a command for managing groups of user definied by the app user (not a pa
 
 Each group contains name of the group and members (list of email adresses of users belonging to the group).
 
-Groups are locally stored.
+Groups are stored locally.
+
+Examples can be found in `app/examples/example_group.ini`.
+
+They can be run using `./build/app/teams_cli --config app/examples/example_group.ini group [subcommand]`, where subcommands are listed below.
 
 ### add, a
 
 Adds a new group.
 
-Arguments:
+#### Arguments:
 
 - -n, --name
 
@@ -56,17 +60,25 @@ Arguments:
 
   Can be given using one flag and list of strings, e.g. `-m "1@gmail.m" "2@email.a"`
 
-  or using multiple flags, e.g. `-m "1@gmail.m" -m "2@email.a"`
+  or using multiple flags, e.g. `-m "1@gmail.m" -m "2@email.a"`.
+
+#### Example:
+
+`./build/app/teams_cli group add -n "new_group" -m "test@gmail.com"`
 
 ### remove, r
 
 Removes a group.
 
-Arguments:
+#### Arguments:
 
 - -g, --group
 
   Name of the group. Is required.
+
+#### Example:
+
+`./build/app/teams_cli group remove -g "new_group"`
 
 ### list, ls
 
@@ -74,29 +86,41 @@ Lists all defined groups.
 
 Takes no arguments.
 
+#### Example:
+
+`./build/app/teams_cli group ls`
+
 ### show, sh
 
 Displays contents (name and members) of a group.
 
-Arguments:
+#### Arguments:
 
 - -g, --group
 
   Name of the group. Is required.
+
+#### Example:
+
+`./build/app/teams_cli group show -g "new_group"`
 
 ### send, s
 
 Sends message to members of a group.
 
-Arguments:
+#### Arguments:
 
 - msg
 
-  Content of the message
+  Content of the message.
 
 - -g, --group
 
   Name of the group. Is required.
+
+#### Example:
+
+`./build/app/teams_cli group send "Content of message" -g "new_group"`
 
 ## Template
 
@@ -108,11 +132,15 @@ Variables do not require names.
 
 Templates are stored locally.
 
+Examples can be found in `app/examples/example_template.ini`.
+
+They can be run using `./build/app/teams_cli --config app/examples/example_templae.ini template [subcommand]`, where subcommands are listed below.
+
 ### add, a
 
 Adds a new template.
 
-Arguments:
+#### Arguments:
 
 - -n, --name
 
@@ -122,15 +150,23 @@ Arguments:
 
   Text of the template with optional variables. Is required.
 
+#### Example:
+
+`./build/app/teams_cli template add -n "new_template" -t "This is variable: [] and this is a second variable []."`
+
 ### remove, r
 
 Removes a template.
 
-Arguments:
+#### Arguments:
 
 - -t, --template
 
   Name of the group. Is required.
+
+#### Example:
+
+`./build/app/teams_cli template r -t "new_template"`
 
 ### list, ls
 
@@ -138,21 +174,29 @@ Lists all defined templates.
 
 Takes no arguments.
 
+#### Example:
+
+`./build/app/teams_cli template ls`
+
 ### show, sh
 
 Displays contents (name and text) of a template.
 
-Arguments:
+#### Arguments:
 
 - -t, --template
 
   Name of the tempate. Is required.
 
+#### Example:
+
+`./build/app/teams_cli template sh -t "new_template"`
+
 ### send, s
 
 Sends message, template text with variables filled with values, to members of a group.
 
-Arguments:
+#### Arguments:
 
 - -t, --template
 
@@ -171,3 +215,7 @@ Arguments:
   Values must be specified using multiple flags, e.g. `-v "b" -v "a"`.
 
   Order of specifing values is important - this command expects values for all variables in the text for one user in a row and like that for every user. Values will replace variables in order of being specified.
+
+#### Example:
+
+`./build/app/teams_cli template s -n "new_template" -g "new_group" -v "a" -v "b"`
