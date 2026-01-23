@@ -27,7 +27,7 @@ CLI::App* setupRemove(CLI::App* app, LazyGraphClient& client) {
     auto* sub = app->add_subcommand("remove", "Remove template")
                     ->alias("r")
                     ->callback([opt, &client]() { caT::remove(*opt); });
-    sub->add_option("-n, --name", opt->name, "Name of the template")
+    sub->add_option("-t, --template", opt->name, "Name of the template")
         ->required();
     return sub;
 }
@@ -38,7 +38,7 @@ CLI::App* setupShow(CLI::App* app, LazyGraphClient& client) {
         app->add_subcommand("show", "Show content of the chosen template")
             ->alias("sh")
             ->callback([opt, &client]() { caT::show(*opt); });
-    sub->add_option("-n, --name", opt->name, "Name of the template")
+    sub->add_option("-t, --template", opt->name, "Name of the template")
         ->required();
     return sub;
 }
@@ -55,7 +55,8 @@ CLI::App* setupSend(CLI::App* app, LazyGraphClient& client) {
     auto* sub = app->add_subcommand("send", "Send template to a group")
                     ->alias("s")
                     ->callback([opt, &client]() { caT::send(*opt, *client); });
-    sub->add_option("-t, --template", opt->template_name, "Template to send")
+    sub->add_option("-t, --template", opt->template_name,
+                    "Name of the template to send")
         ->required();
     sub->add_option("-g, --group", opt->group_name,
                     "Group to send the template to")
