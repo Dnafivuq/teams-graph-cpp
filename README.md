@@ -36,11 +36,11 @@ List of those commends:
 
 This is a command for managing groups of user definied by the app user (not a part of MS Teams).
 
-Each group contains name of the group and members (list of users belonging to the group).
+Each group contains name of the group and members (list of email adresses of users belonging to the group).
 
-The groups are locally stored.
+Groups are locally stored.
 
-### add
+### add, a
 
 Adds a new group.
 
@@ -58,7 +58,7 @@ Arguments:
 
   or using multiple flags, e.g. `-m "1@gmail.m" -m "2@email.a"`
 
-### remove
+### remove, r
 
 Removes a group.
 
@@ -68,13 +68,13 @@ Arguments:
 
   Name of the group. Is required.
 
-### list
+### list, ls
 
 Lists all defined groups.
 
 Takes no arguments.
 
-### show
+### show, sh
 
 Displays contents (name and members) of a group.
 
@@ -84,7 +84,7 @@ Arguments:
 
   Name of the group. Is required.
 
-### send
+### send, s
 
 Sends message to members of a group.
 
@@ -100,12 +100,74 @@ Arguments:
 
 ## Template
 
-### add
+This is a command for managing templates definied by the app user (not a part of MS Teams).
 
-### remove
+Each template contains name and text.
+In text user can define variables by adding `[]` in place where variable is supposed to be.
+Variables do not require names.
 
-### list
+Templates are stored locally.
 
-### show
+### add, a
 
-### send
+Adds a new template.
+
+Arguments:
+
+- -n, --name
+
+  Name of the template. Has to be unique. Is required.
+
+- -t, --text
+
+  Text of the template with optional variables. Is required.
+
+### remove, r
+
+Removes a template.
+
+Arguments:
+
+- -t, --template
+
+  Name of the group. Is required.
+
+### list, ls
+
+Lists all defined templates.
+
+Takes no arguments.
+
+### show, sh
+
+Displays contents (name and text) of a template.
+
+Arguments:
+
+- -t, --template
+
+  Name of the tempate. Is required.
+
+### send, s
+
+Sends message, template text with variables filled with values, to members of a group.
+
+Arguments:
+
+- -t, --template
+
+  Name of the tempate. Is required.
+
+- -g, --group
+
+  Name of the group. Is required.
+
+- -v, --variables
+
+  List of values to fill the variables in the text.
+
+  Number of given values must be equal to number_of_variables_in_text \* number_of_members_in_the_group.
+
+  Values must be specified using multiple flags, e.g. `-v "b" -v "a"`.
+
+  Order of specifing values is important - this command expects values for all variables in the text for one user in a row and like that for every user. Values will replace variables in order of being specified.
