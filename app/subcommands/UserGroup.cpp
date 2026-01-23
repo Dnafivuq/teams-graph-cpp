@@ -35,7 +35,7 @@ CLI::App* setupShow(CLI::App* app, LazyGraphClient& client) {
     auto* sub = app->add_subcommand("show", "Show members of the group")
                     ->alias("sh")
                     ->callback([opt, &client]() { caUG::show(*opt); });
-    sub->add_option("-n, --name", opt->name, "Name of the group")->required();
+    sub->add_option("-g, --group", opt->name, "Name of the group")->required();
     return sub;
 }
 
@@ -44,7 +44,7 @@ CLI::App* setupRemove(CLI::App* app, LazyGraphClient& client) {
     auto* sub = app->add_subcommand("remove", "Remove group")
                     ->alias("d")
                     ->callback([opt, &client]() { caUG::remove(*opt); });
-    sub->add_option("-n, --name", opt->name, "Name of the group")->required();
+    sub->add_option("-g, --group", opt->name, "Name of the group")->required();
     return sub;
 }
 
@@ -54,7 +54,8 @@ CLI::App* setupSend(CLI::App* app, LazyGraphClient& client) {
                     ->alias("s")
                     ->callback([opt, &client]() { caUG::send(*opt, *client); });
     sub->add_option("msg", opt->text, "Message text");
-    sub->add_option("-g, --group", opt->group_name, "target group")->required();
+    sub->add_option("-g, --group", opt->group_name, "Name of the target group")
+        ->required();
 
     return sub;
 }
