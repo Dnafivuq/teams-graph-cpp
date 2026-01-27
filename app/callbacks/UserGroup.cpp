@@ -4,23 +4,15 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
+#include "utils.hpp"
+
 using json = nlohmann::json;
 namespace fs = std::filesystem;
-
-fs::path find_repo_root(fs::path start) {
-    while (!start.empty()) {
-        if (fs::exists(start / ".git")) {
-            return start;
-        }
-        start = start.parent_path();
-    }
-    throw std::runtime_error("Repo root not found");
-}
 
 namespace callbacks::automatization::UserGroup {
 
 void add(sub::automatization::UserGroup::AddOptions const& options) {
-    fs::path repo = find_repo_root(fs::current_path());
+    fs::path repo = utils::find_repo_root(fs::current_path());
     fs::path filePath = repo / "app/data/groups.json";
 
     fs::create_directories(filePath.parent_path());
@@ -36,6 +28,13 @@ void add(sub::automatization::UserGroup::AddOptions const& options) {
         root["groups"] = json::array();
     }
 
+    for (const auto& group : root["groups"])
+        if (group.contains("name") && group["name"].is_string() &&
+            group["name"] == options.name) {
+            std::cerr << "Group with given name already exists\n";
+            return;
+        }
+
     json group;
     group["name"] = options.name;
     group["members"] = json::array();
@@ -49,7 +48,7 @@ void add(sub::automatization::UserGroup::AddOptions const& options) {
 }
 
 void list(sub::automatization::UserGroup::ListOptions const& options) {
-    fs::path repo = find_repo_root(fs::current_path());
+    fs::path repo = utils::find_repo_root(fs::current_path());
     fs::path filePath = repo / "app/data/groups.json";
 
     fs::create_directories(filePath.parent_path());
@@ -73,7 +72,7 @@ void list(sub::automatization::UserGroup::ListOptions const& options) {
 }
 
 void show(sub::automatization::UserGroup::ShowOptions const& options) {
-    fs::path repo = find_repo_root(fs::current_path());
+    fs::path repo = utils::find_repo_root(fs::current_path());
     fs::path filePath = repo / "app/data/groups.json";
 
     fs::create_directories(filePath.parent_path());
@@ -101,7 +100,7 @@ void show(sub::automatization::UserGroup::ShowOptions const& options) {
 }
 
 void remove(sub::automatization::UserGroup::RemoveOptions const& options) {
-    fs::path repo = find_repo_root(fs::current_path());
+    fs::path repo = utils::find_repo_root(fs::current_path());
     fs::path filePath = repo / "app/data/groups.json";
 
     fs::create_directories(filePath.parent_path());
@@ -139,7 +138,7 @@ void remove(sub::automatization::UserGroup::RemoveOptions const& options) {
 
 void send(sub::automatization::UserGroup::SendOptions const& options,
           teams::GraphServiceClient const& client) {
-    fs::path repo = find_repo_root(fs::current_path());
+    fs::path repo = utils::find_repo_root(fs::current_path());
     fs::path filePath = repo / "app/data/groups.json";
 
     json root;

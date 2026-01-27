@@ -27,11 +27,18 @@ void add(sub::automatization::Template::AddOptions const& options) {
     if (!root.contains("templates") || !root["templates"].is_array()) {
         root["templates"] = json::array();
     }
+    for (const auto& user_template : root["templates"])
+        if (user_template.contains("name") &&
+            user_template["name"].is_string() &&
+            user_template["name"] == options.name) {
+            std::cerr << "Template with given name already exists\n";
+            return;
+        }
 
-    json group;
-    group["name"] = options.name;
-    group["text"] = options.text;
-    root["templates"].push_back(group);
+    json user_template;
+    user_template["name"] = options.name;
+    user_template["text"] = options.text;
+    root["templates"].push_back(user_template);
 
     std::ofstream out(filePath);
     out << root.dump(4);
@@ -54,10 +61,11 @@ void list(sub::automatization::Template::ListOptions const& options) {
         root["templates"] = json::array();
     }
 
-    for (const auto& group : root["templates"].items()) {
-        if (!group.value().contains("name") || group.value()["name"].is_null())
+    for (const auto& user_template : root["templates"].items()) {
+        if (!user_template.value().contains("name") ||
+            user_template.value()["name"].is_null())
             continue;
-        std::cout << group.value()["name"] << "\n";
+        std::cout << user_template.value()["name"] << "\n";
     }
 }
 
@@ -78,13 +86,13 @@ void show(sub::automatization::Template::ShowOptions const& options) {
         root["templates"] = json::array();
     }
 
-    for (const auto& group : root["templates"].items()) {
-        if (!group.value().contains("name") ||
-            group.value()["name"].is_null() ||
-            group.value()["name"] != options.name)
+    for (const auto& user_template : root["templates"].items()) {
+        if (!user_template.value().contains("name") ||
+            user_template.value()["name"].is_null() ||
+            user_template.value()["name"] != options.name)
             continue;
-        std::cout << "Name: " << group.value()["name"] << "\n"
-                  << "Text: " << group.value()["text"] << "\n ";
+        std::cout << "Name: " << user_template.value()["name"] << "\n"
+                  << "Text: " << user_template.value()["text"] << "\n ";
     }
 }
 
@@ -107,11 +115,12 @@ void remove(sub::automatization::Template::RemoveOptions const& options) {
 
     json newTemplates = json::array();
 
-    for (const auto& group : root["templates"]) {
-        if (group.contains("name") && group["name"].is_string() &&
-            group["name"] == options.name)
+    for (const auto& user_template : root["templates"]) {
+        if (user_template.contains("name") &&
+            user_template["name"].is_string() &&
+            user_template["name"] == options.name)
             continue;
-        newTemplates.push_back(group);
+        newTemplates.push_back(user_template);
     }
 
     root["templates"] = std::move(newTemplates);
