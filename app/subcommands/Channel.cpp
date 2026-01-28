@@ -18,6 +18,7 @@ CLI::App* setupAdd(CLI::App* app, LazyGraphClient& client) {
                     ->callback([opt, &client]() { cc::add(*opt, *client); });
     sub->add_option("name", opt->name, "Channel name")->required();
     sub->add_option("-t, --team", opt->team)->required();
+    sub->add_flag("-p, --public", opt->isPublic, "Make the channel public");
     return sub;
 }
 

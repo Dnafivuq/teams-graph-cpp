@@ -18,9 +18,11 @@ void add(sub::channel::AddOptions const& options,
         std::cerr << "Team does not exist\n";
         return;
     }
+    std::string const visibility = options.isPublic ? "standard" : "private";
     for (auto name : options.name) {
         futures.emplace_back(std::async(std::launch::async, [&, name]() {
-            auto channel = teams::Channel{.display_name = name};
+            auto channel = teams::Channel{.display_name = name,
+                                          .membership_type = visibility};
             auto result =
                 client.teams().byId(team_id.value()).channels().post(channel);
 

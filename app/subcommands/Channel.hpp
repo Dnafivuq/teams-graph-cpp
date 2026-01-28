@@ -14,6 +14,7 @@ struct RemoveOptions : opts::BaseRemoveOptions {
 struct AddOptions : opts::BaseAddOptions {
     std::string team;
     std::vector<std::string> name;
+    bool isPublic;
 };
 struct ListOptions : opts::BaseListOptions {
     std::string team;
