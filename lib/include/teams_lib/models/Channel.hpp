@@ -10,6 +10,7 @@ struct Channel {
     std::optional<std::string> id;
     std::optional<std::string> display_name;
     std::optional<std::string> description;
+    std::optional<std::string> membership_type;
 };
 
 void to_json(  // NOLINT(readability-identifier-naming)

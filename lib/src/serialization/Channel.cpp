@@ -15,6 +15,9 @@ void to_json(  // NOLINT(readability-identifier-naming)
     if (channel.description && !channel.description.value().empty()) {
         json["description"] = channel.description.value();
     }
+    if (channel.membership_type && !channel.membership_type.value().empty()) {
+        json["membershipType"] = channel.membership_type.value();
+    }
 }
 
 void from_json(  // NOLINT(readability-identifier-naming)
@@ -27,6 +30,9 @@ void from_json(  // NOLINT(readability-identifier-naming)
     }
     if (json.contains("description")) {
         json.at("description").get_to(channel.description);
+    }
+    if (json.contains("membershipType")) {
+        json.at("membershipType").get_to(channel.membership_type);
     }
 }
 
