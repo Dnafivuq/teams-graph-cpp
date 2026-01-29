@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <teams_lib/models/Channel.hpp>
@@ -24,8 +23,8 @@ public:
     }
 
     ConversationMembersRequestBuilder<ClientType> members() {
-        return ConversationMembersRequestBuilder<ClientType>{client(),
-                                                  baseUrl() + "/members"};
+        return ConversationMembersRequestBuilder<ClientType>{
+            client(), baseUrl() + "/members"};
     }
 };
 }  // namespace teams::priv

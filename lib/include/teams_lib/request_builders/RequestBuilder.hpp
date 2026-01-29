@@ -12,7 +12,7 @@ class RequestBuilder {
 public:
     explicit RequestBuilder(const ClientType* client, URL url)
         : base_url_{std::move(url)}, client_{client} {
-        if (!client_) {
+        if (client_ == nullptr) {
             throw std::invalid_argument("Client cannot be nullptr.");
         }
     }

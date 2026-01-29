@@ -18,11 +18,11 @@ public:
 
     UsersItemRequestBuilder<ClientType> byId(const ID& user_id) {
         return UsersItemRequestBuilder<ClientType>{client(),
-                                                  baseUrl() + "/" + user_id};
+                                                   baseUrl() + "/" + user_id};
     }
     UsersItemRequestBuilder<ClientType> byEmail(const std::string& user_email) {
-        return UsersItemRequestBuilder<ClientType>{client(),
-                                                  baseUrl() + "/" + user_email};
+        return UsersItemRequestBuilder<ClientType>{
+            client(), baseUrl() + "/" + user_email};
     }
 };
 }  // namespace teams::priv

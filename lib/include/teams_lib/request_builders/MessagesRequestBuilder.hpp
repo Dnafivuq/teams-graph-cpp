@@ -19,8 +19,5 @@ public:
         return MessagesItemRequestBuilder<ClientType>{
             client(), baseUrl() + "/" + message_id};
     }
-    // ClientResponse<Message> post(const Message& body) const {
-    //     return client()->template post<Message>(baseUrl(), body);
-    // }
 };
 }  // namespace teams::priv
