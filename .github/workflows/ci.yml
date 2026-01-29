@@ -41,12 +41,12 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -S lib -B build-lib-gcc \
+          cmake -S . -B build-lib-gcc \
           -DCMAKE_CXX_COMPILER=g++-14 \
           -DENABLE_COVERAGE=ON
 
       - name: Build
-        run: cmake --build build-lib-gcc --parallel
+        run: cmake --build build-lib-gcc --parallel --target teams_lib
 
       - uses: actions/upload-artifact@v4
         with:
@@ -66,10 +66,10 @@ jobs:
           sudo apt install -y clang cmake clang-tidy
 
       - name: Configure
-        run: cmake -S lib -B build-lib-clang -DCMAKE_CXX_COMPILER=clang++
+        run: cmake -S . -B build-lib-clang -DCMAKE_CXX_COMPILER=clang++
 
       - name: Build
-        run: cmake --build build-lib-clang --parallel
+        run: cmake --build build-lib-clang --parallel --target teams_lib
 
       - name: Run clang-tidy (lib)
         run: |
@@ -97,7 +97,7 @@ jobs:
 
       - name: Configure tests
         run: |
-          cmake -S test -B build-test-lib \
+          cmake -S . -B build-test-lib \
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
             -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build-lib \
               -Wl,-rpath,$PWD/build-lib" \
@@ -105,7 +105,7 @@ jobs:
             -DENABLE_COVERAGE=ON
 
       - name: Build tests
-        run: cmake --build build-test-lib --parallel
+        run: cmake --build build-test-lib --parallel --target tests
 
       - name: Run lib unit tests
         run: |
@@ -159,7 +159,7 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -S app -B build-app-gcc \
+          cmake -S . -B build-app-gcc \
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
             -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
               -Wl,-rpath,$PWD/build" \
@@ -167,7 +167,7 @@ jobs:
             -DENABLE_COVERAGE=ON
 
       - name: Build
-        run: cmake --build build-app-gcc --parallel
+        run: cmake --build build-app-gcc --parallel --target teams_cli
 
       - uses: actions/upload-artifact@v4
         with:
@@ -193,14 +193,14 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -S app -B build-app-clang \
+          cmake -S . -B build-app-clang \
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include" \
             -DCMAKE_EXE_LINKER_FLAGS="-L$PWD/build \
               -Wl,-rpath,$PWD/build" \
             -DCMAKE_CXX_COMPILER=clang++
 
       - name: Build
-        run: cmake --build build-app-clang --parallel
+        run: cmake --build build-app-clang --parallel --target teams_cli
 
       - name: Run clang-tidy (app)
         run: |
@@ -228,7 +228,7 @@ jobs:
 
       - name: Configure tests
         run: |
-          cmake -S test -B build-test-app \
+          cmake -S . -B build-test-app \
             -DCMAKE_CXX_FLAGS="-I$PWD/lib/include -I$PWD/app" \
             -DCMAKE_EXE_LINKER_FLAGS="\
               -L$PWD/build-lib \
@@ -238,7 +238,7 @@ jobs:
             -DENABLE_COVERAGE=ON
 
       - name: Build tests
-        run: cmake --build build-test-app --parallel
+        run: cmake --build build-test-app --parallel --target tests
 
       - name: Run app unit tests
         run: |
