@@ -15,10 +15,10 @@ class UsersItemRequestBuilder : public RequestBuilder<ClientType, User> {
 public:
     explicit UsersItemRequestBuilder(const ClientType* client, URL base_url)
         : base_t{client, std::move(base_url)} {}
-    
+
     ChatsRequestBuilder<ClientType> chats() {
         return ChatsRequestBuilder<ClientType>{client(),
-                                                  baseUrl() + "/chats"};
+                                               baseUrl() + "/chats"};
     }
 };
 }  // namespace teams::priv
