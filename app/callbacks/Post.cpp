@@ -7,7 +7,7 @@
 #include "utils.hpp"
 
 namespace callbacks::post {
-void sendMessage(std::string channel_id, std::string team_id,
+void sendMessage(std::string channel_id, std::string team_id,  // NOLINT
                  const std::string& text,
                  teams::GraphServiceClient const& client) {
     auto msg = teams::Message{
@@ -21,7 +21,7 @@ void sendMessage(std::string channel_id, std::string team_id,
                       .post(msg);
 
     if (!result) {
-        std::visit([](const auto& e) { std::cout << e.message << '\n'; },
+        std::visit([](const auto& err) { std::cout << err.message << '\n'; },
                    result.error());
         return;
     }
@@ -98,7 +98,7 @@ void list(sub::post::ListOptions const& options,
                      .get();
 
     if (!posts) {
-        std::visit([](const auto& e) { std::cout << e.message << '\n'; },
+        std::visit([](const auto& err) { std::cout << err.message << '\n'; },
                    posts.error());
         return;
     }

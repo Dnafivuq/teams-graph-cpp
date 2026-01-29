@@ -4,7 +4,8 @@
 #include <string>
 
 namespace teams::priv {
-enum class BodyType : std::uint8_t { HTML, TEXT };
+enum class BodyType : std::uint8_t { HTML,
+                                     TEXT };
 
 struct ItemBody {
     std::string content;

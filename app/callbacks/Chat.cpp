@@ -12,12 +12,12 @@ void add(sub::chat::AddOptions const& options,
          teams::GraphServiceClient const& client) {
     std::vector<teams::ConversationMember> members;
     std::vector<std::string> roles{"owner"};
-    auto const me = client.me().get();
-    if (!me.has_value()) {
+    auto const user_profile = client.me().get();
+    if (!user_profile.has_value()) {
         std::cerr << "Failed to get me";
         return;
     }
-    members.push_back({.id = me->id, .roles = roles});
+    members.push_back({.id = user_profile->id, .roles = roles});
     for (auto const& email : options.emails) {
         auto const user = client.users().byEmail(email).get();
         if (!user.has_value()) {
@@ -33,7 +33,7 @@ void add(sub::chat::AddOptions const& options,
     auto const result = client.chats().post(chat);
 
     if (!result) {
-        std::visit([](const auto& e) { std::cout << e.message << '\n'; },
+        std::visit([](const auto& err) { std::cout << err.message << '\n'; },
                    result.error());
         return;
     }

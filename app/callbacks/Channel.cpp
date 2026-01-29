@@ -19,7 +19,8 @@ void add(sub::channel::AddOptions const& options,
         return;
     }
     std::string const visibility = options.isPublic ? "standard" : "private";
-    for (auto name : options.name) {
+    futures.reserve(options.name.size());
+    for (const auto& name : options.name) {
         futures.emplace_back(std::async(std::launch::async, [&, name]() {
             auto channel = teams::Channel{.display_name = name,
                                           .membership_type = visibility};
@@ -28,14 +29,14 @@ void add(sub::channel::AddOptions const& options,
 
             if (!result) {
                 std::visit(
-                    [](const auto& e) { std::cout << e.message << '\n'; },
+                    [](const auto& err) { std::cout << err.message << '\n'; },
                     result.error());
                 return;
             }
         }));
     }
-    for (auto& f : futures) {
-        f.get();
+    for (auto& fut : futures) {
+        fut.get();
     }
 }
 
@@ -48,6 +49,7 @@ void remove(sub::channel::RemoveOptions const& options,
         std::cerr << "Team does not exist\n";
         return;
     }
+    futures.reserve(options.name.size());
     for (const auto& name : options.name) {
         futures.emplace_back(std::async(std::launch::async, [&, name]() {
             auto channel_id =
@@ -65,15 +67,15 @@ void remove(sub::channel::RemoveOptions const& options,
 
             if (!result) {
                 std::visit(
-                    [](const auto& e) { std::cout << e.message << '\n'; },
+                    [](const auto& err) { std::cout << err.message << '\n'; },
                     result.error());
                 return;
             }
         }));
     }
 
-    for (auto& f : futures) {
-        f.get();
+    for (auto& fut : futures) {
+        fut.get();
     }
 }
 

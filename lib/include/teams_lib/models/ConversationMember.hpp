@@ -1,8 +1,8 @@
 #pragma once
+#include <chrono>
 #include <nlohmann/json.hpp>
 #include <optional>
 #include <string>
-#include <chrono>
 
 namespace teams {
 namespace priv {

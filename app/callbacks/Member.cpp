@@ -1,16 +1,12 @@
 #include "Member.hpp"
 
-// #include <print>
 #include <algorithm>
 #include <future>
 #include <iostream>
 #include <optional>
 
-#include "subcommands/Channel.hpp"
 #include "teams_lib/client/ClientResponse.hpp"
-#include "teams_lib/models/Channel.hpp"
 #include "teams_lib/models/ConversationMember.hpp"
-#include "teams_lib/models/Message.hpp"
 #include "utils.hpp"
 
 namespace callbacks::member {
@@ -32,7 +28,8 @@ void add(sub::member::AddOptions const& options,
         return;
     }
 
-    for (auto email : options.email) {
+    futures.reserve(options.email.size());
+    for (const auto& email : options.email) {
         futures.emplace_back(std::async(std::launch::async, [&, email]() {
             teams::ClientResponse<teams::ConversationMember> result;
 
@@ -50,14 +47,14 @@ void add(sub::member::AddOptions const& options,
 
             if (!result) {
                 std::visit(
-                    [](const auto& e) { std::cout << e.message << '\n'; },
+                    [](const auto& err) { std::cout << err.message << '\n'; },
                     result.error());
                 return;
             }
         }));
     }
-    for (auto& f : futures) {
-        f.get();
+    for (auto& fut : futures) {
+        fut.get();
     }
 }
 
@@ -92,49 +89,50 @@ void remove(sub::member::RemoveOptions const& options,
     };
 
     if (!result) {
-        std::visit([](const auto& e) { std::cout << e.message << '\n'; },
+        std::visit([](const auto& err) { std::cout << err.message << '\n'; },
                    result.error());
         return;
     }
 
     std::vector<std::string> membership_ids;
-    for (const auto& m : *result) {
-        if (std::ranges::contains(options.email, m.email)) {
-            membership_ids.push_back(*m.membership_id);
+    for (const auto& mem : *result) {
+        if (std::ranges::contains(options.email, mem.email)) {
+            membership_ids.push_back(*mem.membership_id);
         }
     }
 
     if (!result) {
-        std::visit([](const auto& e) { std::cout << e.message << '\n'; },
+        std::visit([](const auto& err) { std::cout << err.message << '\n'; },
                    result.error());
         return;
     }
-    for (auto id : membership_ids) {
-        futures.emplace_back(std::async(std::launch::async, [&, id]() {
+    futures.reserve(membership_ids.size());
+    for (const auto& m_id : membership_ids) {
+        futures.emplace_back(std::async(std::launch::async, [&, m_id]() {
             teams::ClientResponse<void> result;
 
             if (options.channel == "") {
                 result = client.teams().byId(*team_id).members().remove(
-                    {.membership_id = id});
+                    {.membership_id = m_id});
             } else {
                 auto const result = client.teams()
                                         .byId(*team_id)
                                         .channels()
                                         .byId(*channel_id)
                                         .members()
-                                        .remove({.membership_id = id});
+                                        .remove({.membership_id = m_id});
             };
 
             if (!result) {
                 std::visit(
-                    [](const auto& e) { std::cout << e.message << '\n'; },
+                    [](const auto& err) { std::cout << err.message << '\n'; },
                     result.error());
                 return;
             }
         }));
     }
-    for (auto& f : futures) {
-        f.get();
+    for (auto& fut : futures) {
+        fut.get();
     }
 }
 
@@ -169,7 +167,7 @@ void list(sub::member::ListOptions const& options,
     };
 
     if (!result) {
-        std::visit([](const auto& e) { std::cout << e.message << '\n'; },
+        std::visit([](const auto& err) { std::cout << err.message << '\n'; },
                    result.error());
         return;
     }

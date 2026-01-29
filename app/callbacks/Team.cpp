@@ -12,7 +12,8 @@ void add(sub::team::AddOptions const& options,
          teams::GraphServiceClient const& client) {
     std::vector<std::future<void>> futures;
 
-    for (auto name : options.names) {
+    futures.reserve(options.names.size());
+    for (const auto& name : options.names) {
         futures.emplace_back(std::async(std::launch::async, [&, name]() {
             auto team = teams::Team{
                 .display_name = name,
@@ -25,14 +26,14 @@ void add(sub::team::AddOptions const& options,
 
             if (!result) {
                 std::visit(
-                    [](const auto& e) { std::cout << e.message << '\n'; },
+                    [](const auto& err) { std::cout << err.message << '\n'; },
                     result.error());
             }
         }));
     }
 
-    for (auto& f : futures) {
-        f.get();
+    for (auto& fut : futures) {
+        fut.get();
     }
 }
 
@@ -40,6 +41,7 @@ void remove(sub::team::RemoveOptions const& options,
             teams::GraphServiceClient const& client) {
     std::vector<std::future<void>> futures;
 
+    futures.reserve(options.names.size());
     for (auto const& name : options.names) {
         futures.emplace_back(std::async(std::launch::async, [&, name]() {
             auto team_id = utils::getTeamId(name, client);
@@ -52,14 +54,14 @@ void remove(sub::team::RemoveOptions const& options,
 
             if (!result) {
                 std::visit(
-                    [](const auto& e) { std::cout << e.message << '\n'; },
+                    [](const auto& err) { std::cout << err.message << '\n'; },
                     result.error());
             }
         }));
     }
 
-    for (auto& f : futures) {
-        f.get();
+    for (auto& fut : futures) {
+        fut.get();
     }
 }
 
