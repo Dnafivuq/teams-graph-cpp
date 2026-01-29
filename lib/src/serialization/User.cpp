@@ -1,4 +1,3 @@
-#include <format>
 #include <teams_lib/models/User.hpp>
 
 #include "Optional.hpp"  // IWYU pragma: keep
